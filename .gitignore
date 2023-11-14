@@ -1,0 +1,18 @@
+# Node.js
+node_modules/
+
+# React Native
+android/
+ios/
+
+# TypeScript
+*.tsbuildinfo
+
+# Visual Studio Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
