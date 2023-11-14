@@ -1,19 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { getData, updateTable } from "../database";
+import { ModifierData, SavingThrowData } from "../DataInterfaces";
+
+interface LinkedData {
+  name: string;
+  modifier?: number;
+  status: number;
+}
 
 const SavingThrows: React.FC = () => {
-  const onPressHandler = () => {};
+  const [savingThrowData, setSavingThrowData] = useState<
+    SavingThrowData[] | null
+  >(null);
+  const [modifierData, setModifierData] = useState<ModifierData[] | null>(null);
+  const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
 
-  const savingThrows = [
-    { name: "Strength", modifier: -1 },
-    { name: "Dexterity", modifier: 5 },
-    { name: "Constitution", modifier: 1 },
-    { name: "Intelligence", modifier: 1 },
-    { name: "Wisdom", modifier: 2 },
-    { name: "Charisma", modifier: 6 },
-  ];
+  const onPressHandler = (save: SavingThrowData) => {
+    updateTable("SavingThrows", save.name, "status", save.status === 1 ? 0 : 1);
+    fetchData();
+  };
+
+  let proficiencyBonus = 2;
+
+  const fetchData = async () => {
+    try {
+      const savingData = await getData<SavingThrowData>("SavingThrows");
+      const modData = await getData<ModifierData>("Modifiers");
+
+      setSavingThrowData(savingData);
+      setModifierData(modData);
+      linkData(modData, savingData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const linkData = (
+    modData: ModifierData[] | null,
+    saveData: SavingThrowData[] | null
+  ): void => {
+    const newLinkedData: LinkedData[] =
+      saveData?.map((obj) => ({
+        name: obj.name,
+        modifier: modData?.find((mod) => mod.name === obj.name)?.amount,
+        status: obj.status,
+      })) ?? [];
+
+    setLinkedData(newLinkedData);
+  };
 
   return (
     <View style={styles.container}>
@@ -21,19 +62,37 @@ const SavingThrows: React.FC = () => {
         <Text style={styles.title}>Saving Throws</Text>
       </View>
       <View style={styles.rows}>
-        {savingThrows.map((save, index) => (
+        {linkedData?.map((data, index) => (
           <View style={styles.row} key={index}>
-            <TouchableOpacity onPress={onPressHandler}>
+            <TouchableOpacity onPress={() => onPressHandler(data)}>
               <Ionicons
                 style={styles.button}
-                name="radio-button-on"
+                name={data.status ? "radio-button-on" : "radio-button-off"}
                 size={20}
               />
             </TouchableOpacity>
             <View style={styles.alignRight}>
-              <Text style={styles.name}>{save.name}</Text>
+              <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.modifier}>
-                {save.modifier >= 0 ? `+${save.modifier}` : save.modifier}
+                {data.status === 1
+                  ? `${
+                      proficiencyBonus +
+                        Math.floor(((data.modifier ?? 0) - 10) / 2) >=
+                      0
+                        ? `+${
+                            proficiencyBonus +
+                            Math.floor(((data.modifier ?? 0) - 10) / 2)
+                          }`
+                        : `${
+                            proficiencyBonus +
+                            Math.floor(((data.modifier ?? 0) - 10) / 2)
+                          }`
+                    }`
+                  : `${
+                      Math.floor(((data.modifier ?? 0) - 10) / 2) >= 0
+                        ? `+${Math.floor(((data.modifier ?? 0) - 10) / 2)}`
+                        : `${Math.floor(((data.modifier ?? 0) - 10) / 2)}`
+                    }`}
               </Text>
             </View>
           </View>

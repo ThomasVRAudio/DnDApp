@@ -33,3 +33,13 @@ export interface SpellData {
     name: string;
   };
 }
+
+export interface ModifierData {
+  name: string;
+  amount: number;
+}
+
+export interface SavingThrowData {
+  name: string;
+  status: number;
+}

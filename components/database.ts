@@ -9,11 +9,11 @@ export const createTables = () => {
       );
 
       tx.executeSql(
-        "create table if not exists SavingThrows (id integer primary key not null, name text, active integer );"
+        "create table if not exists Skills (id integer primary key not null, name text, active integer);"
       );
 
       tx.executeSql(
-        "create table if not exists Skills (id integer primary key not null, name text, active integer);"
+        "create table if not exists SavingThrows (id integer primary key not null, name text, status integer);"
       );
     },
     (error: SQLite.SQLError) => console.log(error),
@@ -108,6 +108,22 @@ export const showAllTables = () => {
           console.log("Tables:", tables);
         }
       );
+    },
+    (error: SQLite.SQLError) => console.log(error),
+    () => console.log("Show All Tables: success!")
+  );
+};
+
+export const showTableContent = (tableName: string) => {
+  db.transaction(
+    (tx: SQLite.SQLTransaction) => {
+      tx.executeSql(`PRAGMA table_info(${tableName});`, [], (_, result) => {
+        const tables: string[] = [];
+        for (let i = 0; i < result.rows.length; i++) {
+          tables.push(result.rows.item(i).name);
+        }
+        console.log("Tables:", tables);
+      });
     },
     (error: SQLite.SQLError) => console.log(error),
     () => console.log("Show All Tables: success!")

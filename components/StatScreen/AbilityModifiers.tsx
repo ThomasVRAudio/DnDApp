@@ -3,11 +3,7 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import Colors from "../../styles/Colors";
 
 import { getData, updateTable } from "../database";
-
-interface ModifierData {
-  name: string;
-  amount: number;
-}
+import { ModifierData } from "../DataInterfaces";
 
 const AbilityModifiers: React.FC = () => {
   const [data, setData] = useState<ModifierData[] | null>(null);
@@ -24,10 +20,6 @@ const AbilityModifiers: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   const onConfirmChange = (name: string, amount: number) => {
     updateTable("Modifiers", name, "amount", amount);
