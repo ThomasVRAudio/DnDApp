@@ -12,8 +12,9 @@ interface Props {
   amount: number;
   level: number;
   max: number;
-  subtractSlot: (index: number) => void;
-  setMaxAmount: (index: number, maxAmount: number) => void;
+  name: string;
+  subtractSlot: (index: string) => void;
+  setMaxAmount: (name: string, maxAmount: number) => void;
 }
 
 const SpellSlot = (props: Props) => {
@@ -23,12 +24,12 @@ const SpellSlot = (props: Props) => {
     <View style={styles.container}>
       <View style={styles.levelBlock}>
         <View style={styles.levelNumberContainer}>
-          <TouchableOpacity onPress={() => props.subtractSlot(props.level)}>
+          <TouchableOpacity onPress={() => props.subtractSlot(props.name)}>
             <Text style={styles.levelNumber}>{props.amount}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.levelTitleContainer}>
-          <Text style={styles.levelTitle}>Level {props.level}</Text>
+          <Text style={styles.levelTitle}>{props.name}</Text>
         </View>
       </View>
       <View style={styles.maxContainer}>
@@ -37,7 +38,7 @@ const SpellSlot = (props: Props) => {
           style={styles.maxContainerText}
           placeholder={props.max.toString()}
           onChangeText={(text) => setMaxValue(parseInt(text))}
-          onSubmitEditing={() => props.setMaxAmount(props.level, maxValue)}
+          onSubmitEditing={() => props.setMaxAmount(props.name, maxValue)}
           keyboardType="numeric"
         ></TextInput>
       </View>

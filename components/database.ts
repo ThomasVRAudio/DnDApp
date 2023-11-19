@@ -20,6 +20,10 @@ class Database {
         tx.executeSql(
           "create table if not exists CharacterDetails (id integer primary key not null, name text, info text);"
         );
+
+        tx.executeSql(
+          "create table if not exists SpellSlots (id integer primary key not null, name text, amount integer, max integer, level integer);"
+        );
       },
       (error: SQLite.SQLError) => console.log(error),
       () => console.log("success!")

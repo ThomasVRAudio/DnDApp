@@ -15,8 +15,9 @@ export interface EquipmentData {
 
 export interface SpellSlotData {
   amount: number;
-  level: number;
+  name: string;
   max: number;
+  level: number;
 }
 
 export interface SpellData {

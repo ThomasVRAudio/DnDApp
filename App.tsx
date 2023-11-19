@@ -30,9 +30,6 @@ export default function App() {
       case 1:
         window = <StatScreen />;
         break;
-      default:
-        window = <CombatScreen />;
-        break;
     }
     return window;
   }

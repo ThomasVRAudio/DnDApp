@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import SpellSlot from "./SpellSlot";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SpellData, SpellSlotData } from "../DataInterfaces";
 import { SlotsDefault } from "../Data";
 import Colors from "../../styles/Colors";
@@ -9,9 +9,9 @@ import { AntDesign } from "@expo/vector-icons";
 import AddSpellModal from "./AddSpellModal";
 import Spell from "../Spell";
 import SpellDescriptionModal from "./SpellDescriptionModal";
+import { database } from "../Database";
 
 const SpellSection = () => {
-  const [slots, setSlots] = useState<SpellSlotData[]>(SlotsDefault);
   const [modal, setModal] = useState<boolean>(false);
   const [spells, setSpells] = useState<SpellData[] | null>(null);
   const [showSpellDescriptionModal, setShowSpellDescriptionModal] =
@@ -19,36 +19,30 @@ const SpellSection = () => {
   const [spellDescription, setSpellDescription] = useState<SpellData | null>(
     null
   );
+  const [spellSlotData, setSpellSlotData] = useState<SpellSlotData[] | null>(
+    null
+  );
 
-  function SubtractSlotAmount(level: number) {
-    const updatedSlots: SpellSlotData[] = slots.map((item) =>
-      item.level === level
-        ? { ...item, amount: Math.max(item.amount - 1, 0) }
-        : item
+  function SubtractSlotAmount(name: string) {
+    database.UpdateTable(
+      "SpellSlots",
+      name,
+      "amount",
+      (spellSlotData?.find((d) => d.name === name)?.amount ?? 0) - 1
     );
-    setSlots(updatedSlots);
+    fetchData();
   }
 
   const ResetSlotsToMax = () => {
-    let updatedSlots: SpellSlotData[] = slots.map((item) => ({
-      ...item,
-      amount: item.max,
-    }));
-
-    setSlots(updatedSlots);
+    spellSlotData?.forEach((s) => {
+      database.UpdateTable("SpellSlots", s.name, "amount", s.max);
+      fetchData();
+    });
   };
 
-  const SetMaxAmount = (level: number, maxValue: number) => {
-    let updatedSlots: SpellSlotData[] = slots.map((item) =>
-      item.level === level
-        ? {
-            ...item,
-            max: maxValue,
-          }
-        : item
-    );
-
-    setSlots(updatedSlots);
+  const SetMaxAmount = (name: string, maxValue: number) => {
+    database.UpdateTable("SpellSlots", name, "max", maxValue);
+    fetchData();
   };
 
   const ShowSpellDescription = (data: SpellData) => {
@@ -56,18 +50,50 @@ const SpellSection = () => {
     setSpellDescription(data);
   };
 
+  const fetchData = async () => {
+    try {
+      const fetchedData = await database.GetData<SpellSlotData>("SpellSlots");
+      setSpellSlotData(fetchedData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    //database.DropTable("SpellSlots");
+    //database.CreateTables();
+    // slots.forEach((s, index) => {
+    //   database.InsertIntoTable(
+    //     "SpellSlots",
+    //     ["name", "amount", "max", "level"],
+    //     [`Level ${index + 1} `, 0, 0, index + 1]
+    //   );
+    // });
+
+    // for (let i = 0; i < 9; i++) {
+    //   database.InsertIntoTable(
+    //     "SpellSlots",
+    //     ["name", "amount", "max", "level"],
+    //     [`Level ${i + 1} `, 0, 0, i + 1]
+    //   );
+    // }
+
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Spells</Text>
       </View>
       <View style={styles.slotContainer}>
-        {slots.map((item, index) => (
+        {spellSlotData?.map((item, index) => (
           <SpellSlot
             key={index}
             amount={item.amount}
             level={item.level}
             max={item.max}
+            name={item.name}
             subtractSlot={SubtractSlotAmount}
             setMaxAmount={SetMaxAmount}
           />

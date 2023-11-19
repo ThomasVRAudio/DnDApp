@@ -11,7 +11,6 @@ export async function GetProficiencyBonusAsync(): Promise<number> {
     const data: Info[] | null = await database.GetData<Info>(
       "CharacterDetails"
     );
-    console.log(data?.forEach((d) => console.log(d)));
 
     let level = parseInt(data?.find((d) => d.name === "Level")?.info || "0");
 

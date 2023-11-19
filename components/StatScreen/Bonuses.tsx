@@ -48,11 +48,24 @@ const Bonuses: React.FC = () => {
         ? 10 + (perceptionMod ?? 0) + profBonus
         : 10 + (perceptionMod ?? 0);
 
+      let spellSave =
+        8 +
+        profBonus +
+        Math.floor(
+          ((modData?.find((d) => d.name === "Charisma")?.amount ?? 0) - 10) / 2
+        );
+
+      let spellAtk =
+        profBonus +
+        Math.floor(
+          ((modData?.find((d) => d.name === "Charisma")?.amount ?? 0) - 10) / 2
+        );
+
       let newData: StatsData = {
         profiencyBonus: profBonus,
         passivePerception: passivePerception,
-        spellAttack: 0,
-        spellSaveDC: 0,
+        spellAttack: spellAtk,
+        spellSaveDC: spellSave,
       };
 
       setData(newData);
@@ -75,8 +88,8 @@ const Bonuses: React.FC = () => {
         title="Proficiency Bonus"
         info={`+${data?.profiencyBonus || 0}`}
       />
-      <BonusBox title="Spell Attack" info="+6" />
-      <BonusBox title="Spell Save DC" info={14} />
+      <BonusBox title="Spell Attack" info={`+${data?.spellAttack || 0}`} />
+      <BonusBox title="Spell Save DC" info={data?.spellSaveDC || 0} />
     </View>
   );
 };
