@@ -5,6 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { ModifierData, SavingThrowData } from "../DataInterfaces";
 import { database } from "../Database";
+import { GetProficiencyBonusAsync } from "../../helper";
 
 interface LinkedData {
   name: string;
@@ -13,11 +14,8 @@ interface LinkedData {
 }
 
 const SavingThrows: React.FC = () => {
-  const [savingThrowData, setSavingThrowData] = useState<
-    SavingThrowData[] | null
-  >(null);
-  const [modifierData, setModifierData] = useState<ModifierData[] | null>(null);
   const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
+  const [proficiencyBonus, setProficiencyBonus] = useState<number>(0);
 
   const onPressHandler = (save: SavingThrowData) => {
     database.UpdateTable(
@@ -29,8 +27,6 @@ const SavingThrows: React.FC = () => {
     fetchData();
   };
 
-  let proficiencyBonus = 2;
-
   const fetchData = async () => {
     try {
       const savingData = await database.GetData<SavingThrowData>(
@@ -38,9 +34,9 @@ const SavingThrows: React.FC = () => {
       );
       const modData = await database.GetData<ModifierData>("Modifiers");
 
-      setSavingThrowData(savingData);
-      setModifierData(modData);
       linkData(modData, savingData);
+      let profBonus = await GetProficiencyBonusAsync();
+      setProficiencyBonus(profBonus);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

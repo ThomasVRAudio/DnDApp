@@ -47,3 +47,13 @@ export interface SavingThrowData {
 export interface SkillData extends SavingThrowData {
   ability: string;
 }
+
+export interface CharData {
+  Name: string;
+  Level: string;
+  Race: string;
+  Background: string;
+  Class: string;
+  Alignment: string;
+  Experience: string;
+}

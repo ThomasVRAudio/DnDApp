@@ -2,30 +2,21 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import Colors from "../../styles/Colors";
 import { database } from "../Database";
+import { CharData } from "../DataInterfaces";
 
 interface Info {
   name: string;
   info: string;
 }
 
-interface CharDetails {
-  Name: string;
-  Level: string;
-  Race: string;
-  Background: string;
-  Class: string;
-  Alignment: string;
-  Experience: string;
-}
-
 const CharacterDetails = () => {
-  const [data, setData] = useState<CharDetails | null>(null);
+  const [data, setData] = useState<CharData | null>(null);
 
   const fetchData = async () => {
     try {
       const fetchedData = await database.GetData<Info>("CharacterDetails");
 
-      const propertyMapping: Record<keyof CharDetails, string> = {
+      const propertyMapping: Record<keyof CharData, string> = {
         Name: "Name",
         Level: "Level",
         Race: "Race",
@@ -35,7 +26,7 @@ const CharacterDetails = () => {
         Experience: "Experience",
       };
 
-      let newDetails: CharDetails = {
+      let newDetails: CharData = {
         Name: "null",
         Level: "1",
         Race: "null",
@@ -46,7 +37,7 @@ const CharacterDetails = () => {
       };
 
       Object.entries(propertyMapping).forEach(([propertyName, dataName]) => {
-        newDetails[propertyName as keyof CharDetails] =
+        newDetails[propertyName as keyof CharData] =
           fetchedData?.find((d) => d.name === dataName)?.info || "null";
       });
       setData(newDetails);
