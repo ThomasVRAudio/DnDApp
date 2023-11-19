@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { getData, updateTable } from "../database";
+
 import { ModifierData, SavingThrowData } from "../DataInterfaces";
+import { database } from "../Database";
 
 interface LinkedData {
   name: string;
@@ -19,7 +20,12 @@ const SavingThrows: React.FC = () => {
   const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
 
   const onPressHandler = (save: SavingThrowData) => {
-    updateTable("SavingThrows", save.name, "status", save.status === 1 ? 0 : 1);
+    database.UpdateTable(
+      "SavingThrows",
+      save.name,
+      "status",
+      save.status === 1 ? 0 : 1
+    );
     fetchData();
   };
 
@@ -27,8 +33,10 @@ const SavingThrows: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const savingData = await getData<SavingThrowData>("SavingThrows");
-      const modData = await getData<ModifierData>("Modifiers");
+      const savingData = await database.GetData<SavingThrowData>(
+        "SavingThrows"
+      );
+      const modData = await database.GetData<ModifierData>("Modifiers");
 
       setSavingThrowData(savingData);
       setModifierData(modData);

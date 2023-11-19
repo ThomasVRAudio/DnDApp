@@ -1,31 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { database } from "../Database";
+import { ModifierData, SkillData } from "../DataInterfaces";
+
+interface LinkedData {
+  name: string;
+  modifier?: number;
+  status: number;
+}
 
 const Skills: React.FC = () => {
-  const onPressHandler = () => {};
+  const [skillData, setSkillData] = useState<SkillData[] | null>(null);
+  const [modifierData, setModifierData] = useState<ModifierData[] | null>(null);
+  const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
 
-  const uniqueSkills: { name: string; modifier: number }[] = [
-    { name: "Acrobatics (DEX)", modifier: 3 },
-    { name: "Animal Handling (WIS)", modifier: 2 },
-    { name: "Arcana (INT)", modifier: 1 },
-    { name: "Athletics (STR)", modifier: 5 },
-    { name: "Deception (CHA)", modifier: 6 },
-    { name: "History (INT)", modifier: 1 },
-    { name: "Insight (WIS)", modifier: 2 },
-    { name: "Intimidation (CHA)", modifier: 6 },
-    { name: "Investigation (INT)", modifier: 1 },
-    { name: "Medicine (WIS)", modifier: 2 },
-    { name: "Nature (INT)", modifier: 1 },
-    { name: "Perception (WIS)", modifier: 2 },
-    { name: "Performance (CHA)", modifier: 6 },
-    { name: "Persuasion (CHA)", modifier: 6 },
-    { name: "Religion (INT)", modifier: 1 },
-    { name: "Sleight of Hand (DEX)", modifier: 3 },
-    { name: "Stealth (DEX)", modifier: 3 },
-    { name: "Survival (WIS)", modifier: 2 },
-  ];
+  const onPressHandler = (skill: LinkedData) => {
+    database.UpdateTable(
+      "Skills",
+      skill.name,
+      "status",
+      skill.status === 1 ? 0 : 1
+    );
+    fetchData();
+  };
+
+  let proficiencyBonus = 2;
+
+  const fetchData = async () => {
+    try {
+      const skillData = await database.GetData<SkillData>("Skills");
+      const modData = await database.GetData<ModifierData>("Modifiers");
+
+      setSkillData(skillData);
+      setModifierData(modData);
+      linkData(modData, skillData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const linkData = (
+    modData: ModifierData[] | null,
+    skillData: SkillData[] | null
+  ): void => {
+    const newLinkedData: LinkedData[] =
+      skillData?.map((obj) => ({
+        name: obj.name,
+        modifier: modData?.find((mod) => mod.name === obj.ability)?.amount,
+        status: obj.status,
+      })) ?? [];
+
+    setLinkedData(newLinkedData);
+  };
 
   return (
     <View style={styles.container}>
@@ -34,19 +66,37 @@ const Skills: React.FC = () => {
         <View style={styles.line}></View>
       </View>
       <View style={styles.rows}>
-        {uniqueSkills.map((skill, index) => (
+        {linkedData?.map((data, index) => (
           <View style={styles.row} key={index}>
-            <TouchableOpacity onPress={onPressHandler}>
+            <TouchableOpacity onPress={() => onPressHandler(data)}>
               <Ionicons
                 style={styles.button}
-                name="radio-button-on"
+                name={data.status ? "radio-button-on" : "radio-button-off"}
                 size={20}
               />
             </TouchableOpacity>
             <View style={styles.alignRight}>
-              <Text style={styles.name}>{skill.name}</Text>
+              <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.modifier}>
-                {skill.modifier >= 0 ? `+${skill.modifier}` : skill.modifier}
+                {data.status === 1
+                  ? `${
+                      proficiencyBonus +
+                        Math.floor(((data.modifier ?? 0) - 10) / 2) >=
+                      0
+                        ? `+${
+                            proficiencyBonus +
+                            Math.floor(((data.modifier ?? 0) - 10) / 2)
+                          }`
+                        : `${
+                            proficiencyBonus +
+                            Math.floor(((data.modifier ?? 0) - 10) / 2)
+                          }`
+                    }`
+                  : `${
+                      Math.floor(((data.modifier ?? 0) - 10) / 2) >= 0
+                        ? `+${Math.floor(((data.modifier ?? 0) - 10) / 2)}`
+                        : `${Math.floor(((data.modifier ?? 0) - 10) / 2)}`
+                    }`}
               </Text>
             </View>
           </View>

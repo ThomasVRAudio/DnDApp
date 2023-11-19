@@ -43,3 +43,7 @@ export interface SavingThrowData {
   name: string;
   status: number;
 }
+
+export interface SkillData extends SavingThrowData {
+  ability: string;
+}
