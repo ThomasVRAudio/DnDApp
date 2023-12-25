@@ -1,10 +1,12 @@
 import { View, Modal, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SpellData, SpellDataToMap } from "../DataInterfaces";
 import Colors from "../../styles/Colors";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
   setModal: (on: boolean) => void;
   data: SpellDataToMap | null;
+  removeSpell: (name: string) => void;
 }
 
 const SpellDescriptionModal = (props: Props) => {
@@ -54,6 +56,17 @@ const SpellDescriptionModal = (props: Props) => {
                   ? props.data?.desc.replace(/\./g, ".\n\n")
                   : null}
               </Text>
+            </View>
+            <View style={styles.removeContainer}>
+              <Ionicons
+                style={styles.removeButton}
+                name="trash"
+                size={25}
+                onPress={() => {
+                  props.removeSpell(props.data?.name ?? "null");
+                  props.setModal(false);
+                }}
+              />
             </View>
           </TouchableOpacity>
         </View>
@@ -135,5 +148,13 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: "Regular",
     textAlign: "justify",
+  },
+  removeButton: {
+    alignItems: "flex-end",
+  },
+  removeContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
   },
 });

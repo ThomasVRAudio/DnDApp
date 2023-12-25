@@ -35,19 +35,13 @@ export default function CombatScreen() {
         </View>
         <View style={styles.gearContainer}>
           <View style={styles.weaponContainer}>
-            <Equipment
-              equipment_type={"Weapon"}
-              element={<Weapon equipment={null} />}
-            />
+            <Equipment equipment_type={"Weapon"} />
           </View>
           <View style={styles.headerContainerArmor}>
             <Text style={styles.upperTitle}>Armor</Text>
           </View>
           <View style={styles.weaponContainer}>
-            <Armorset
-              element={<Armor equipment={null} />}
-              setArmorClass={setArmorClass}
-            />
+            <Armorset setArmorClass={setArmorClass} />
           </View>
         </View>
       </View>
@@ -87,6 +81,7 @@ const styles = StyleSheet.create({
   },
   upperContainer: {
     flexDirection: "row",
+    height: 550,
   },
   hitPointsContainer: {
     flex: 1,
@@ -109,7 +104,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   weaponContainer: {
-    height: 170,
+    flex: 1,
   },
   spellslotContainer: {
     height: 100,

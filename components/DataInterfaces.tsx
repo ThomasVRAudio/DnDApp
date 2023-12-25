@@ -13,16 +13,22 @@ export interface EquipmentData {
     max_bonus?: number | undefined;
   };
   armor_category?: string;
+  weapon_range?: string;
   properties?: {
     name: string;
   }[];
   finesse: number;
+  modifier?: string;
+  id: number;
 }
 
 export interface WeaponData {
   name: string;
   damageDice: string;
   finesse: number;
+  modifier?: string;
+  weaponRange?: string;
+  id: number;
 }
 
 export interface ArmorData {
@@ -31,6 +37,7 @@ export interface ArmorData {
   base: number;
   dexBonus: number;
   maxBonus?: number;
+  id: number;
 }
 
 export interface SpellSlotData {

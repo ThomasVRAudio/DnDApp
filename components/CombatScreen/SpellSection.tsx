@@ -115,6 +115,15 @@ const SpellSection = () => {
     fetchData();
   }, []);
 
+  const removeSpell = async (name: string) => {
+    try {
+      await database.RemoveRow("Spells", name);
+      fetchData();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -185,6 +194,7 @@ const SpellSection = () => {
           <SpellDescriptionModal
             setModal={setShowSpellDescriptionModal}
             data={spellDescription}
+            removeSpell={removeSpell}
           />
         ) : (
           <Text></Text>

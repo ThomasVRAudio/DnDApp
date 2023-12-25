@@ -59,7 +59,10 @@ class Database {
           (id integer primary key not null,
             name text,
             damageDice text,
-            finesse integer
+            finesse integer,
+            weaponRange text,
+            modifier text,
+            weaponID integer
             )
           `
         );
@@ -145,6 +148,18 @@ class Database {
       () => console.log(`Updated amount for ${name}: success!`)
     );
   }
+
+  RemoveRow = async (tableName: string, name: string): Promise<void> => {
+    db.transaction(
+      (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(
+          `DELETE FROM ${tableName} WHERE ROWID IN (SELECT ROWID FROM ${tableName} WHERE name = ? LIMIT 1)`,
+          [name]
+        );
+      },
+      (error: SQLite.SQLError) => console.error("Transaction error:", error)
+    );
+  };
 
   InsertIntoTable(table: string, columns: string[], values: any[]) {
     const placeholders = values.map(() => "?").join(", ");

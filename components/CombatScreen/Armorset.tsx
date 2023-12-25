@@ -11,9 +11,9 @@ import { TouchableOpacity } from "react-native";
 import AddEquipmentModal from "./AddEquipmentModal";
 import React from "react";
 import { database } from "../Database";
+import Armor from "./Armor";
 
 interface Props {
-  element: React.JSX.Element;
   setArmorClass: (amount: number) => void;
 }
 
@@ -66,6 +66,7 @@ const Armorset = (props: Props) => {
           armor_category: d.category,
           properties: [] as { name: string }[],
           finesse: 0,
+          id: d.id,
         };
 
         allEquipment.push(equipmentItem);
@@ -124,6 +125,15 @@ const Armorset = (props: Props) => {
     fetchData();
   }, []);
 
+  const RemoveArmor = async (name: string) => {
+    try {
+      await database.RemoveRow("Armorset", name);
+      fetchData();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     //database.TestDataBase();
     //database.CreateTables();
@@ -137,9 +147,11 @@ const Armorset = (props: Props) => {
     <View>
       <ScrollView style={styles.weaponsContainer}>
         {equipment?.map((equipmentItem, index) => (
-          <React.Fragment key={index}>
-            {React.cloneElement(props.element, { equipment: equipmentItem })}
-          </React.Fragment>
+          <Armor
+            removeArmor={RemoveArmor}
+            key={index}
+            equipment={equipmentItem}
+          />
         ))}
       </ScrollView>
       <TouchableOpacity
@@ -172,6 +184,6 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   weaponsContainer: {
-    maxHeight: 130,
+    maxHeight: 220,
   },
 });
