@@ -6,10 +6,15 @@ import Equipment from "./CombatScreen/Equipment";
 import Weapon from "./CombatScreen/Weapon";
 import Armor from "./CombatScreen/Armor";
 import SpellSection from "./CombatScreen/SpellSection";
+import ACInitSpeed from "./CombatScreen/ACInitSpeed";
+import { useEffect, useState } from "react";
+import Armorset from "./CombatScreen/Armorset";
 
 let heightDimension: number = Dimensions.get("window").height;
 
 export default function CombatScreen() {
+  const [armorClass, setArmorClass] = useState<number>(0);
+
   return (
     <View style={styles.container}>
       <View style={styles.d20ImageContainer}>
@@ -19,11 +24,7 @@ export default function CombatScreen() {
         />
       </View>
       <View style={styles.headerContainer}>
-        <View style={styles.headerContainerLeft}>
-          <UpperStat name={"Armor Class"} number={4} isSharp={true} />
-          <UpperStat name={"Initiative"} number={3} isSharp={false} />
-          <UpperStat name={"Speed"} number={30} isSharp={false} />
-        </View>
+        <ACInitSpeed AC={armorClass} />
         <View style={styles.headerContainerRight}>
           <Text style={styles.upperTitle}>Weapons</Text>
         </View>
@@ -43,9 +44,9 @@ export default function CombatScreen() {
             <Text style={styles.upperTitle}>Armor</Text>
           </View>
           <View style={styles.weaponContainer}>
-            <Equipment
-              equipment_type={"Armor"}
+            <Armorset
               element={<Armor equipment={null} />}
+              setArmorClass={setArmorClass}
             />
           </View>
         </View>
@@ -66,10 +67,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 100,
     marginBottom: 20,
-  },
-  headerContainerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   headerContainerRight: {
     justifyContent: "flex-end",

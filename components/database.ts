@@ -22,7 +22,69 @@ class Database {
         );
 
         tx.executeSql(
-          "create table if not exists SpellSlots (id integer primary key not null, name text, amount integer, max integer, level integer);"
+          "create table if not exists Health (id integer primary key not null, name text, amount integer);"
+        );
+
+        tx.executeSql(
+          `
+          create table if not exists Spells 
+          (id integer primary key not null, 
+            name text, 
+            desc text, 
+            higher_level text, 
+            components text,
+            duration text,
+            level text,
+            range text,
+            casting_time text,
+            school text            
+            );
+          `
+        );
+
+        tx.executeSql(
+          `
+          create table if not exists SpellSlots 
+          (id integer primary key not null, 
+            name text, 
+            amount integer, 
+            max integer, 
+            level integer);
+          `
+        );
+
+        tx.executeSql(
+          `
+          create table if not exists Weaponset
+          (id integer primary key not null,
+            name text,
+            damageDice text,
+            finesse integer
+            )
+          `
+        );
+
+        tx.executeSql(
+          `
+          create table if not exists Armorset
+          (id integer primary key not null,
+            name text,
+            category text,
+            base integer,
+            dexBonus integer,
+            maxBonus integer
+            )
+          `
+        );
+
+        tx.executeSql(
+          `
+          create table if not exists Speed
+          (id integer primary key not null,
+            name text,
+            amount integer
+            )
+          `
         );
       },
       (error: SQLite.SQLError) => console.log(error),
@@ -90,7 +152,7 @@ class Database {
     db.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
-          `INSERT INTO ${table} (${columns.join(
+          `INSERT OR REPLACE INTO ${table} (${columns.join(
             ", "
           )}) VALUES (${placeholders})`,
           values
@@ -134,6 +196,38 @@ class Database {
       },
       (error: SQLite.SQLError) => console.log(error),
       () => console.log("Show All Tables: success!")
+    );
+  }
+
+  TestDataBase(): void {
+    const tableName = "Armorset";
+
+    db.transaction(
+      (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(`SELECT * FROM ${tableName};`, [], (_, result) => {
+          const rows = result.rows;
+          console.log(`Table: ${tableName}`);
+          for (let i = 0; i < rows.length; i++) {
+            console.log(rows.item(i));
+          }
+        });
+      },
+      (error: SQLite.SQLError) => console.log(error),
+      () => console.log("TestDataBase: success!")
+    );
+  }
+
+  RemoveAllRows(tableName: string): void {
+    db.transaction(
+      (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(`DELETE FROM ${tableName};`, [], (_, deleteResult) => {
+          console.log(
+            `Removed all rows from ${tableName}. Rows affected: ${deleteResult.rowsAffected}`
+          );
+        });
+      },
+      (error: SQLite.SQLError) => console.log(error),
+      () => console.log(`RemoveAllRows for ${tableName}: success!`)
     );
   }
 }

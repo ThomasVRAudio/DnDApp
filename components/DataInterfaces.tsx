@@ -8,9 +8,29 @@ export interface EquipmentData {
     damage_dice: string;
   };
   armor_class?: {
-    base: string;
+    base: number;
+    dex_bonus: number;
+    max_bonus?: number | undefined;
   };
   armor_category?: string;
+  properties?: {
+    name: string;
+  }[];
+  finesse: number;
+}
+
+export interface WeaponData {
+  name: string;
+  damageDice: string;
+  finesse: number;
+}
+
+export interface ArmorData {
+  name: string;
+  category: string;
+  base: number;
+  dexBonus: number;
+  maxBonus?: number;
 }
 
 export interface SpellSlotData {
@@ -35,7 +55,27 @@ export interface SpellData {
   };
 }
 
+export interface SpellDataToMap {
+  error: string;
+  name: string;
+  desc: string;
+  higher_level?: string;
+  components?: string;
+  duration: string;
+  level: string;
+  range: string;
+  casting_time: string;
+  school: {
+    name: string;
+  };
+}
+
 export interface ModifierData {
+  name: string;
+  amount: number;
+}
+
+export interface SpeedData {
   name: string;
   amount: number;
 }
@@ -57,4 +97,9 @@ export interface CharData {
   Class: string;
   Alignment: string;
   Experience: string;
+}
+
+export interface HealthData {
+  name: string;
+  amount: number;
 }

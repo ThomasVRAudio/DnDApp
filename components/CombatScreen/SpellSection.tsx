@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import SpellSlot from "./SpellSlot";
 import React, { useEffect, useState } from "react";
-import { SpellData, SpellSlotData } from "../DataInterfaces";
+import { SpellData, SpellDataToMap, SpellSlotData } from "../DataInterfaces";
 import { SlotsDefault } from "../Data";
 import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -13,12 +13,11 @@ import { database } from "../Database";
 
 const SpellSection = () => {
   const [modal, setModal] = useState<boolean>(false);
-  const [spells, setSpells] = useState<SpellData[] | null>(null);
+  const [spells, setSpells] = useState<SpellDataToMap[] | null>(null);
   const [showSpellDescriptionModal, setShowSpellDescriptionModal] =
     useState<boolean>(false);
-  const [spellDescription, setSpellDescription] = useState<SpellData | null>(
-    null
-  );
+  const [spellDescription, setSpellDescription] =
+    useState<SpellDataToMap | null>(null);
   const [spellSlotData, setSpellSlotData] = useState<SpellSlotData[] | null>(
     null
   );
@@ -45,21 +44,55 @@ const SpellSection = () => {
     fetchData();
   };
 
-  const ShowSpellDescription = (data: SpellData) => {
+  const ShowSpellDescription = (data: SpellDataToMap) => {
     setShowSpellDescriptionModal(true);
     setSpellDescription(data);
   };
 
+  const SaveSpell = (data: SpellData) => {
+    const columns: string[] = [
+      "name",
+      "desc",
+      "higher_level",
+      "components",
+      "duration",
+      "level",
+      "range",
+      "casting_time",
+      "school",
+    ];
+    const values: string[] = [
+      data.name,
+      data.desc ? data.desc.join("") : "",
+      data.higher_level ? data.higher_level.join("") : "",
+      data.components ? data.components.join("") : "",
+      data.duration,
+      data.level,
+      data.range,
+      data.casting_time,
+      data.school.name,
+    ];
+    database.InsertIntoTable("Spells", columns, values);
+    fetchData();
+  };
+
   const fetchData = async () => {
     try {
-      const fetchedData = await database.GetData<SpellSlotData>("SpellSlots");
-      setSpellSlotData(fetchedData);
+      const fetchedSpellSlotData = await database.GetData<SpellSlotData>(
+        "SpellSlots"
+      );
+
+      const fetchedSpellData = await database.GetData<SpellDataToMap>("Spells");
+
+      setSpellSlotData(fetchedSpellSlotData);
+      setSpells(fetchedSpellData);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
+    //database.ShowAllTables();
     //database.DropTable("SpellSlots");
     //database.CreateTables();
     // slots.forEach((s, index) => {
@@ -77,7 +110,8 @@ const SpellSection = () => {
     //     [`Level ${i + 1} `, 0, 0, i + 1]
     //   );
     // }
-
+    //database.DropTable("Spells");
+    //database.ShowTableContent("Spells");
     fetchData();
   }, []);
 
@@ -109,11 +143,7 @@ const SpellSection = () => {
       </View>
       <View>
         {modal ? (
-          <AddSpellModal
-            setModal={setModal}
-            setSpells={setSpells}
-            spell={spells}
-          />
+          <AddSpellModal setModal={setModal} saveSpell={SaveSpell} />
         ) : (
           <Text></Text>
         )}

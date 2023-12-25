@@ -4,6 +4,7 @@ import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { database } from "../Database";
 import { ModifierData, SkillData } from "../DataInterfaces";
+import { GetProficiencyBonusAsync } from "../../helper";
 
 interface LinkedData {
   name: string;
@@ -15,6 +16,7 @@ const Skills: React.FC = () => {
   const [skillData, setSkillData] = useState<SkillData[] | null>(null);
   const [modifierData, setModifierData] = useState<ModifierData[] | null>(null);
   const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
+  const [proficiencyBonus, setProficiencyBonus] = useState<number>(0);
 
   const onPressHandler = (skill: LinkedData) => {
     database.UpdateTable(
@@ -26,12 +28,13 @@ const Skills: React.FC = () => {
     fetchData();
   };
 
-  let proficiencyBonus = 2;
-
   const fetchData = async () => {
     try {
       const skillData = await database.GetData<SkillData>("Skills");
       const modData = await database.GetData<ModifierData>("Modifiers");
+
+      let pBonus = await GetProficiencyBonusAsync();
+      pBonus && setProficiencyBonus(pBonus);
 
       setSkillData(skillData);
       setModifierData(modData);

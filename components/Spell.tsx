@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { SpellData } from "./DataInterfaces";
+import { SpellData, SpellDataToMap } from "./DataInterfaces";
 import Colors from "../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
-  data: SpellData;
-  showSpellDescription: (data: SpellData) => void;
+  data: SpellDataToMap;
+  showSpellDescription: (data: SpellDataToMap) => void;
 }
 
 const Spell = (props: Props) => {
@@ -18,7 +18,7 @@ const Spell = (props: Props) => {
       {parseInt(props.data.level) === 0 ? (
         <Text style={styles.level}>Cantrip</Text>
       ) : (
-        <Text style={styles.level}>Level {props.data.level}</Text>
+        <Text style={styles.level}>Level {parseFloat(props.data.level)}</Text>
       )}
       <Text style={styles.amount}>
         {" "}

@@ -5,8 +5,7 @@ import { SpellData } from "../DataInterfaces";
 
 interface Props {
   setModal: (updateModel: boolean) => void;
-  setSpells: (spellData: SpellData[]) => void;
-  spell: SpellData[] | null;
+  saveSpell: (spellData: SpellData) => void;
 }
 
 interface api {
@@ -51,8 +50,8 @@ const AddSpellModal = (props: Props) => {
       .then((resp) => resp.json())
       .then((json: SpellData) => {
         if (json && !json.error) {
-          let updatedSpellList = props.spell ? [...props.spell, json] : [json];
-          props.setSpells(updatedSpellList);
+          //let updatedSpellList = props.spell ? [...props.spell, json] : [json];
+          props.saveSpell(json);
         }
       })
       .catch((error) => console.error(error));

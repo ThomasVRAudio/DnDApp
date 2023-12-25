@@ -5,7 +5,7 @@ import { EquipmentData } from "../DataInterfaces";
 
 interface Props {
   setModal: (updateModel: boolean) => void;
-  setEquipment: (equipmentData: EquipmentData[]) => void;
+  saveEquipment: (equipmentData: EquipmentData) => void;
   equipment: EquipmentData[] | null;
   equipment_type: string;
 }
@@ -54,10 +54,11 @@ const AddEquipmentModal = (props: Props) => {
         if (json && !json.error) {
           if (json.equipment_category) {
             if (json.equipment_category.name === props.equipment_type) {
-              let updatedEquipment = props.equipment
-                ? [...props.equipment, json]
-                : [json];
-              props.setEquipment(updatedEquipment);
+              // let updatedEquipment = props.equipment
+              //   ? [...props.equipment, json]
+              //   : [json];
+              //console.log("Testing: " + json.armor_category);
+              props.saveEquipment(json);
             }
           }
         }

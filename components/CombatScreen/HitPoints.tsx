@@ -1,41 +1,91 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import Colors from "../../styles/Colors";
 import AddButton from "./AddButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { HealthData } from "../DataInterfaces";
+import { database } from "../Database";
 
 const HitPoints = () => {
   const [maxHealth, setMaxHealth] = useState<number>(23);
   const [health, setHealth] = useState<number>(0);
   const [tempHealth, setTempHealth] = useState<number>(0);
+  const [editMaxAmount, setEditMaxAmount] = useState<number>(0);
 
   type Operation = "add" | "subtract" | "reset";
 
   const onEditHealth = (operation: Operation) => {
     switch (operation) {
       case "add":
-        setHealth(health + 1);
+        database.UpdateTable("Health", "currentHealth", "amount", health + 1);
+        console.log("hi");
         break;
       case "subtract":
-        setHealth(health - 1);
+        database.UpdateTable("Health", "currentHealth", "amount", health - 1);
         break;
       case "reset":
-        setHealth(maxHealth);
+        database.UpdateTable("Health", "currentHealth", "amount", maxHealth);
         break;
     }
+
+    fetchData();
   };
 
   const onEditTempHealth = (operation: Operation) => {
     switch (operation) {
       case "add":
-        setTempHealth(tempHealth + 1);
+        database.UpdateTable("Health", "tempHealth", "amount", tempHealth + 1);
         break;
       case "subtract":
-        setTempHealth(tempHealth - 1);
+        database.UpdateTable("Health", "tempHealth", "amount", tempHealth - 1);
         break;
       case "reset":
-        setTempHealth(0);
+        database.UpdateTable("Health", "tempHealth", "amount", 0);
         break;
+    }
+
+    fetchData();
+  };
+
+  const onEditMaxHealth = (amount: number) => {
+    database.UpdateTable("Health", "maxHealth", "amount", amount);
+
+    fetchData();
+  };
+
+  useEffect(() => {
+    //console.log(health);
+  }, [health]);
+
+  useEffect(() => {
+    //database.RemoveAllRows("Health");
+    //database.CreateTables();
+    //database.ShowAllTables();
+    //const columns = ["name", "amount"];
+    // const valueNames = ["maxHealth", "currentHealth", "tempHealth"];
+    // valueNames.forEach((val) =>
+    //   database.InsertIntoTable("Health", columns, [val, 0])
+    // );
+
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const fetchedData = await database.GetData<HealthData>("Health");
+
+      const maxHealth = fetchedData?.find((e) => e.name === "maxHealth");
+      const currentHealth = fetchedData?.find(
+        (e) => e.name === "currentHealth"
+      );
+      const tempHealth = fetchedData?.find((e) => e.name === "tempHealth");
+
+      console.log(fetchedData);
+      setMaxHealth(maxHealth?.amount ?? 0);
+      setTempHealth(tempHealth?.amount ?? 0);
+      setHealth(currentHealth?.amount ?? 0);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -43,7 +93,14 @@ const HitPoints = () => {
     <View>
       <View style={styles.upperHitPointTracker}>
         <View style={styles.header}>
-          <Text style={styles.text}>Hit Point Maximum: {maxHealth}</Text>
+          <Text style={styles.text}>Hit Point Maximum: </Text>
+          <TextInput
+            style={styles.textMaxHealth}
+            placeholder={maxHealth.toString()}
+            placeholderTextColor={styles.textMaxHealth.color}
+            onChangeText={(text) => setEditMaxAmount(parseInt(text))}
+            onSubmitEditing={() => onEditMaxHealth(editMaxAmount)}
+          ></TextInput>
           <View style={styles.reloadContainer}>
             <Ionicons
               style={styles.reload}
@@ -93,6 +150,7 @@ const styles = StyleSheet.create({
     height: 163,
     width: 280,
     padding: 10,
+    paddingTop: 2,
     flexDirection: "column",
     marginBottom: 10,
   },
@@ -105,14 +163,20 @@ const styles = StyleSheet.create({
     height: 163,
     width: 280,
     padding: 10,
+    paddingTop: 2,
     flexDirection: "column",
   },
   header: {
     flex: 1,
     marginBottom: 10,
     flexDirection: "row",
+    alignItems: "center",
   },
   text: {
+    fontFamily: "Regular",
+    color: Colors.primary,
+  },
+  textMaxHealth: {
     fontFamily: "Regular",
     color: Colors.primary,
   },

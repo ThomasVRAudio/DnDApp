@@ -1,10 +1,10 @@
 import { View, Modal, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { SpellData } from "../DataInterfaces";
+import { SpellData, SpellDataToMap } from "../DataInterfaces";
 import Colors from "../../styles/Colors";
 
 interface Props {
   setModal: (on: boolean) => void;
-  data: SpellData | null;
+  data: SpellDataToMap | null;
 }
 
 const SpellDescriptionModal = (props: Props) => {
@@ -22,7 +22,9 @@ const SpellDescriptionModal = (props: Props) => {
                 parseInt(props.data?.level) === 0 ? (
                   <Text style={styles.level}>Cantrip</Text>
                 ) : (
-                  <Text style={styles.level}>Level {props.data?.level}</Text>
+                  <Text style={styles.level}>
+                    Level {parseFloat(props.data?.level)}
+                  </Text>
                 )
               ) : null}
             </View>
@@ -49,9 +51,7 @@ const SpellDescriptionModal = (props: Props) => {
               <Text style={styles.description}>
                 {props.data?.desc.length !== undefined ||
                 props.data?.desc.length !== 0
-                  ? props.data?.desc.map((element) =>
-                      element.replace(/\./g, ".\n\n")
-                    )
+                  ? props.data?.desc.replace(/\./g, ".\n\n")
                   : null}
               </Text>
             </View>
