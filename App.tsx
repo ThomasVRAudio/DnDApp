@@ -6,6 +6,7 @@ import CombatScreen from "./components/CombatScreen";
 import React, { StrictMode, useEffect, useState } from "react";
 import StatScreen from "./components/StatScreen";
 import { database } from "./components/Database";
+import ItemScreen from "./components/ItemScreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -51,6 +52,9 @@ export default function App() {
             modifiersChanged={modifiersChanged}
           />
         );
+        break;
+      case 2:
+        window = <ItemScreen />;
         break;
     }
     return window;

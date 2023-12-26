@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     flex: 1,
     width: "auto",
-    height: heightDimension - 75,
+    height: heightDimension,
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",

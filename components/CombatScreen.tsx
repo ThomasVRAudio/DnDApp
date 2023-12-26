@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     flex: 1,
     width: "auto",
-    height: heightDimension - 100,
+    height: heightDimension,
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",

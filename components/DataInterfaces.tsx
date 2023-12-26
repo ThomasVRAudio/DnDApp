@@ -121,3 +121,9 @@ export interface Initial {
   name: string;
   status: number;
 }
+
+export interface ItemData {
+  name: string;
+  desc: string;
+  id: number;
+}

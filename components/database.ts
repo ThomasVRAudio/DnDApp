@@ -98,6 +98,16 @@ class Database {
 
         tx.executeSql(
           `
+          create table if not exists Items
+          (id integer primary key not null,
+            name text,
+            desc text
+            )
+          `
+        );
+
+        tx.executeSql(
+          `
           create table if not exists Stats
           (id integer primary key not null,
             name text,
@@ -165,12 +175,42 @@ class Database {
     );
   }
 
+  UpdateTableByID(
+    tableName: string,
+    id: number,
+    columnName: string,
+    newValue: string | number
+  ): void {
+    db.transaction(
+      (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(
+          `UPDATE ${tableName} SET ${columnName} = ? WHERE ID = ?`,
+          [newValue, id]
+        );
+      },
+      (error: SQLite.SQLError) => console.log(error),
+      () => console.log(`Updated amount for ${id}: success!`)
+    );
+  }
+
   RemoveRow = async (tableName: string, name: string): Promise<void> => {
     db.transaction(
       (tx: SQLite.SQLTransaction) => {
         tx.executeSql(
           `DELETE FROM ${tableName} WHERE ROWID IN (SELECT ROWID FROM ${tableName} WHERE name = ? LIMIT 1)`,
           [name]
+        );
+      },
+      (error: SQLite.SQLError) => console.error("Transaction error:", error)
+    );
+  };
+
+  RemoveRowByID = async (tableName: string, id: number): Promise<void> => {
+    db.transaction(
+      (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(
+          `DELETE FROM ${tableName} WHERE ROWID IN (SELECT ROWID FROM ${tableName} WHERE id = ? LIMIT 1)`,
+          [id]
         );
       },
       (error: SQLite.SQLError) => console.error("Transaction error:", error)
