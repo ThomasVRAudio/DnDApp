@@ -15,6 +15,7 @@ import Armor from "./Armor";
 
 interface Props {
   setArmorClass: (amount: number) => void;
+  modifiersChanged: boolean;
 }
 
 const Armorset = (props: Props) => {
@@ -123,7 +124,7 @@ const Armorset = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [, props.modifiersChanged]);
 
   const RemoveArmor = async (name: string) => {
     try {

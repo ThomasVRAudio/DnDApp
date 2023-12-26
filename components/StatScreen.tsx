@@ -7,7 +7,12 @@ import Skills from "./StatScreen/Skills";
 
 let heightDimension: number = Dimensions.get("window").height;
 
-const StatScreen = () => {
+interface Props {
+  setModifiersChanged: (bool: boolean) => void;
+  modifiersChanged: boolean;
+}
+
+const StatScreen = (props: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.d20ImageContainer}>
@@ -21,17 +26,20 @@ const StatScreen = () => {
       </View>
       <View style={styles.primarySection}>
         <CharacterDetails />
-        <Bonuses />
+        <Bonuses modifiersChanged={props.modifiersChanged} />
       </View>
       <View style={styles.header}>
         <Text style={styles.subheaderText}>Ability Modifiers</Text>
       </View>
       <View style={styles.secundarySection}>
-        <AbilityModifiers />
-        <SavingThrows />
+        <AbilityModifiers
+          setModifiersChanged={props.setModifiersChanged}
+          modifiersChanged={props.modifiersChanged}
+        />
+        <SavingThrows modifiersChanged={props.modifiersChanged} />
       </View>
       <View style={styles.lastSection}>
-        <Skills />
+        <Skills modifiersChanged={props.modifiersChanged} />
       </View>
     </View>
   );

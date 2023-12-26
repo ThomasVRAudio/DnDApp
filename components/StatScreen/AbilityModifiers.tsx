@@ -4,7 +4,12 @@ import Colors from "../../styles/Colors";
 import { ModifierData } from "../DataInterfaces";
 import { database } from "../Database";
 
-const AbilityModifiers: React.FC = () => {
+interface Props {
+  setModifiersChanged: (bool: boolean) => void;
+  modifiersChanged: boolean;
+}
+
+const AbilityModifiers = (props: Props) => {
   const [data, setData] = useState<ModifierData[] | null>(null);
 
   const fetchData = async () => {
@@ -22,6 +27,7 @@ const AbilityModifiers: React.FC = () => {
 
   const onConfirmChange = (name: string, amount: number) => {
     database.UpdateTable("Modifiers", name, "amount", amount);
+    props.setModifiersChanged(!props.modifiersChanged);
     fetchData();
   };
 

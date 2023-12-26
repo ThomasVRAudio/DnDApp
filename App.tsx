@@ -3,7 +3,7 @@ import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { useFonts } from "expo-font";
 import Colors from "./styles/Colors";
 import CombatScreen from "./components/CombatScreen";
-import React, { StrictMode } from "react";
+import React, { StrictMode, useState } from "react";
 import StatScreen from "./components/StatScreen";
 
 export default function App() {
@@ -15,6 +15,8 @@ export default function App() {
     Regular: require("./assets/fonts/Merriweather-Regular.ttf"),
   });
 
+  const [modifiersChanged, setModifiersChanged] = useState<boolean>(false);
+
   const { width, height } = Dimensions.get("window");
   const totalPages = 3;
 
@@ -25,10 +27,15 @@ export default function App() {
     let window: React.JSX.Element = <View></View>;
     switch (index) {
       case 0:
-        window = <CombatScreen />;
+        window = <CombatScreen modifiersChanged={modifiersChanged} />;
         break;
       case 1:
-        window = <StatScreen />;
+        window = (
+          <StatScreen
+            setModifiersChanged={setModifiersChanged}
+            modifiersChanged={modifiersChanged}
+          />
+        );
         break;
     }
     return window;

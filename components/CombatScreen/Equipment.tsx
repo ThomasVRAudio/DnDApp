@@ -15,6 +15,7 @@ import Weapon from "./Weapon";
 
 interface Props {
   equipment_type: string;
+  modifiersChanged: boolean;
 }
 
 const Equipment = (props: Props) => {
@@ -106,7 +107,7 @@ const Equipment = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [, props.modifiersChanged]);
 
   useEffect(() => {
     //database.TestDataBase();
@@ -126,6 +127,7 @@ const Equipment = (props: Props) => {
             key={index}
             equipment={equipmentItem}
             modifierData={modifiers}
+            modifiersChanged={props.modifiersChanged}
           />
         ))}
       </ScrollView>

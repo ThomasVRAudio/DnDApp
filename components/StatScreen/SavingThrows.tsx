@@ -13,7 +13,11 @@ interface LinkedData {
   status: number;
 }
 
-const SavingThrows: React.FC = () => {
+interface Props {
+  modifiersChanged: boolean;
+}
+
+const SavingThrows = (props: Props) => {
   const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
   const [proficiencyBonus, setProficiencyBonus] = useState<number>(0);
 
@@ -44,7 +48,7 @@ const SavingThrows: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [, props.modifiersChanged]);
 
   const linkData = (
     modData: ModifierData[] | null,

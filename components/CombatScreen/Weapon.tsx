@@ -12,12 +12,14 @@ interface Props {
   equipment: EquipmentData | null;
   removeWeapon: (name: string) => void;
   modifierData: ModifierData[] | null;
+  modifiersChanged: boolean;
 }
 
 export default function Weapon({
   equipment,
   removeWeapon,
   modifierData,
+  modifiersChanged,
 }: Props) {
   const [profBonus, setProfBonus] = useState<number>(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -41,9 +43,8 @@ export default function Weapon({
     let amount: number = Math.floor(
       ((modifierData?.find((d) => d.name === modifier)?.amount ?? 0) - 10) / 2
     );
-    console.log(modifier);
     setModifierAmount(amount);
-  }, [modifier]);
+  }, [modifier, modifierData]);
 
   const selectAbility = [
     "Strength",

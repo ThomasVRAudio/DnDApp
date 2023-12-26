@@ -21,6 +21,11 @@ interface BonusProps {
 interface BonusPropsModifier {
   title: string;
   info: number;
+  modifiersChanged: boolean;
+}
+
+interface Props {
+  modifiersChanged: boolean;
 }
 
 interface StatsData {
@@ -42,6 +47,7 @@ const BonusBox: React.FC<BonusProps> = ({ title, info }) => (
 const BonusBoxWithModifier: React.FC<BonusPropsModifier> = ({
   title,
   info,
+  modifiersChanged,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modifier, setModifier] = useState<string>("");
@@ -49,7 +55,7 @@ const BonusBoxWithModifier: React.FC<BonusPropsModifier> = ({
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [, modifiersChanged]);
 
   const fetchData = async () => {
     try {
@@ -116,7 +122,7 @@ const BonusBoxWithModifier: React.FC<BonusPropsModifier> = ({
   );
 };
 
-const Bonuses: React.FC = () => {
+const Bonuses: React.FC<Props> = (props: Props) => {
   const [data, setData] = useState<StatsData | null>(null);
 
   useEffect(() => {
@@ -159,16 +165,7 @@ const Bonuses: React.FC = () => {
         : 10 + (perceptionMod ?? 0);
 
       let spellSave = 8 + profBonus;
-      //+
-      // Math.floor(
-      //   ((modData?.find((d) => d.name === "Charisma")?.amount ?? 0) - 10) / 2
-      // );
-
       let spellAtk = profBonus;
-      //+
-      // Math.floor(
-      //   ((modData?.find((d) => d.name === "Charisma")?.amount ?? 0) - 10) / 2
-      // );
 
       let newData: StatsData = {
         profiencyBonus: profBonus,
@@ -185,7 +182,7 @@ const Bonuses: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [, props.modifiersChanged]);
 
   return (
     <View style={styles.container}>
@@ -200,10 +197,12 @@ const Bonuses: React.FC = () => {
       <BonusBoxWithModifier
         title="Spell Attack"
         info={data?.spellAttack || 0}
+        modifiersChanged={props.modifiersChanged}
       />
       <BonusBoxWithModifier
         title="Spell Save DC"
         info={data?.spellSaveDC || 0}
+        modifiersChanged={props.modifiersChanged}
       />
     </View>
   );

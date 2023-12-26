@@ -19,7 +19,11 @@ import Armorset from "./CombatScreen/Armorset";
 
 let heightDimension: number = Dimensions.get("window").height;
 
-export default function CombatScreen() {
+interface Props {
+  modifiersChanged: boolean;
+}
+
+export default function CombatScreen(props: Props) {
   const [armorClass, setArmorClass] = useState<number>(0);
 
   return (
@@ -32,7 +36,10 @@ export default function CombatScreen() {
           />
         </View>
         <View style={styles.headerContainer}>
-          <ACInitSpeed AC={armorClass} />
+          <ACInitSpeed
+            AC={armorClass}
+            modifiersChanged={props.modifiersChanged}
+          />
           <View style={styles.headerContainerRight}>
             <Text style={styles.upperTitle}>Weapons</Text>
           </View>
@@ -43,13 +50,19 @@ export default function CombatScreen() {
           </View>
           <View style={styles.gearContainer}>
             <View style={styles.weaponContainer}>
-              <Equipment equipment_type={"Weapon"} />
+              <Equipment
+                equipment_type={"Weapon"}
+                modifiersChanged={props.modifiersChanged}
+              />
             </View>
             <View style={styles.headerContainerArmor}>
               <Text style={styles.upperTitle}>Armor</Text>
             </View>
             <View style={styles.weaponContainer}>
-              <Armorset setArmorClass={setArmorClass} />
+              <Armorset
+                setArmorClass={setArmorClass}
+                modifiersChanged={props.modifiersChanged}
+              />
             </View>
           </View>
         </View>

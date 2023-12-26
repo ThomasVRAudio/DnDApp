@@ -12,7 +12,11 @@ interface LinkedData {
   status: number;
 }
 
-const Skills: React.FC = () => {
+interface Props {
+  modifiersChanged: boolean;
+}
+
+const Skills: React.FC<Props> = (props: Props) => {
   const [skillData, setSkillData] = useState<SkillData[] | null>(null);
   const [modifierData, setModifierData] = useState<ModifierData[] | null>(null);
   const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
@@ -46,7 +50,7 @@ const Skills: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [, props.modifiersChanged]);
 
   const linkData = (
     modData: ModifierData[] | null,

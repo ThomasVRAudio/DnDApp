@@ -14,6 +14,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
   AC: number;
+  modifiersChanged: boolean;
 }
 
 const ACInitSpeed = (props: Props) => {
@@ -37,8 +38,9 @@ const ACInitSpeed = (props: Props) => {
     //   ["name", "amount", "turnedOn"],
     //   ["ac", 0, 0]
     // );
+    console.log("currently in ACInit Speed");
     fetchData();
-  }, [, props.AC]);
+  }, [, props.AC, props.modifiersChanged]);
 
   const fetchData = async () => {
     try {
@@ -47,7 +49,6 @@ const ACInitSpeed = (props: Props) => {
       );
       const speedValue = acInitSpeedData?.find((e) => e.name === "speed");
       const acValue = acInitSpeedData?.find((e) => e.name === "ac");
-      console.log("acValue: " + acValue?.amount);
       setSpeed(speedValue?.amount ?? 0);
       setCustomAC(acValue?.amount ?? 0);
       setIsCustom(acValue?.turnedOn ? true : false);
