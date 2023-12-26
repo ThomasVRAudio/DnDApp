@@ -82,10 +82,21 @@ class Database {
 
         tx.executeSql(
           `
-          create table if not exists Speed
+          create table if not exists ACInitSpeed
           (id integer primary key not null,
             name text,
-            amount integer
+            amount integer,
+            turnedOn integer
+            )
+          `
+        );
+
+        tx.executeSql(
+          `
+          create table if not exists Stats
+          (id integer primary key not null,
+            name text,
+            modifier text
             )
           `
         );

@@ -82,9 +82,10 @@ export interface ModifierData {
   amount: number;
 }
 
-export interface SpeedData {
+export interface ACInitSpeedData {
   name: string;
   amount: number;
+  turnedOn: number;
 }
 
 export interface SavingThrowData {
@@ -109,4 +110,9 @@ export interface CharData {
 export interface HealthData {
   name: string;
   amount: number;
+}
+
+export interface StatsModData {
+  name: string;
+  modifier: string;
 }

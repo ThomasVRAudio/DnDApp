@@ -1,4 +1,10 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import SpellSlot from "./SpellSlot";
 import React, { useEffect, useState } from "react";
 import { SpellData, SpellDataToMap, SpellSlotData } from "../DataInterfaces";
@@ -113,6 +119,9 @@ const SpellSection = () => {
     //database.DropTable("Spells");
     //database.ShowTableContent("Spells");
     fetchData();
+    console.log(
+      "length: " + spells?.filter((spell) => parseInt(spell.level) === 0).length
+    );
   }, []);
 
   const removeSpell = async (name: string) => {
@@ -157,12 +166,14 @@ const SpellSection = () => {
           <Text></Text>
         )}
       </View>
-      <View style={styles.spellHeader}>
-        <Text style={styles.spellHeaderTitle}>Traits</Text>
-      </View>
       <View style={styles.spellContainer}></View>
       <View style={styles.spellHeader}>
-        <Text style={styles.spellHeaderTitle}>Cantrips</Text>
+        <Text style={styles.spellHeaderTitle}>
+          {spells?.filter((spell) => parseInt(spell.level) === 0).length ===
+            0 || undefined
+            ? ""
+            : "Cantrips"}
+        </Text>
       </View>
       <View style={styles.spellContainer}>
         {spells
@@ -176,7 +187,12 @@ const SpellSection = () => {
           ))}
       </View>
       <View style={styles.spellHeader}>
-        <Text style={styles.spellHeaderTitle}>Levels</Text>
+        <Text style={styles.spellHeaderTitle}>
+          {spells?.filter((spell) => parseInt(spell.level) > 0).length === 0 ||
+          undefined
+            ? ""
+            : "Levels"}
+        </Text>
       </View>
       <View style={styles.spellContainer}>
         {spells

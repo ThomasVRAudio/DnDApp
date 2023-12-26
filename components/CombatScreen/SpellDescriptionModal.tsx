@@ -58,15 +58,14 @@ const SpellDescriptionModal = (props: Props) => {
               </Text>
             </View>
             <View style={styles.removeContainer}>
-              <Ionicons
-                style={styles.removeButton}
-                name="trash"
-                size={25}
+              <TouchableOpacity
                 onPress={() => {
                   props.removeSpell(props.data?.name ?? "null");
                   props.setModal(false);
                 }}
-              />
+              >
+                <Ionicons style={styles.removeButton} name="trash" size={25} />
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
         </View>

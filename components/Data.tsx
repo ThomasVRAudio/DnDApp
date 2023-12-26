@@ -4,6 +4,7 @@ const slotData: SpellSlotData = {
   level: 0,
   amount: 0,
   max: 0,
+  name: "",
 };
 
 export let SlotsDefault: SpellSlotData[] = Array.from(

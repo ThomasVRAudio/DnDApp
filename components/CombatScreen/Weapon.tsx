@@ -99,12 +99,11 @@ export default function Weapon({
             />
           </View>
           <View style={styles.removeContainer}>
-            <Ionicons
-              style={styles.removeButton}
-              name="trash"
-              size={20}
+            <TouchableOpacity
               onPress={() => removeWeapon(equipment?.name ?? "null")}
-            />
+            >
+              <Ionicons style={styles.removeButton} name="trash" size={20} />
+            </TouchableOpacity>
           </View>
         </View>
       ) : (

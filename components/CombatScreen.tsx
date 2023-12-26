@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 import UpperStat from "./CombatScreen/UpperStat";
 import Colors from "../styles/Colors";
 import HitPoints from "./CombatScreen/HitPoints";
@@ -16,39 +23,41 @@ export default function CombatScreen() {
   const [armorClass, setArmorClass] = useState<number>(0);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.d20ImageContainer}>
-        <Image
-          style={styles.d20Image}
-          source={require("../assets/Image_D20.png")}
-        />
-      </View>
-      <View style={styles.headerContainer}>
-        <ACInitSpeed AC={armorClass} />
-        <View style={styles.headerContainerRight}>
-          <Text style={styles.upperTitle}>Weapons</Text>
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.container}>
+        <View style={styles.d20ImageContainer}>
+          <Image
+            style={styles.d20Image}
+            source={require("../assets/Image_D20.png")}
+          />
         </View>
-      </View>
-      <View style={styles.upperContainer}>
-        <View style={styles.hitPointsContainer}>
-          <HitPoints />
-        </View>
-        <View style={styles.gearContainer}>
-          <View style={styles.weaponContainer}>
-            <Equipment equipment_type={"Weapon"} />
-          </View>
-          <View style={styles.headerContainerArmor}>
-            <Text style={styles.upperTitle}>Armor</Text>
-          </View>
-          <View style={styles.weaponContainer}>
-            <Armorset setArmorClass={setArmorClass} />
+        <View style={styles.headerContainer}>
+          <ACInitSpeed AC={armorClass} />
+          <View style={styles.headerContainerRight}>
+            <Text style={styles.upperTitle}>Weapons</Text>
           </View>
         </View>
+        <View style={styles.upperContainer}>
+          <View style={styles.hitPointsContainer}>
+            <HitPoints />
+          </View>
+          <View style={styles.gearContainer}>
+            <View style={styles.weaponContainer}>
+              <Equipment equipment_type={"Weapon"} />
+            </View>
+            <View style={styles.headerContainerArmor}>
+              <Text style={styles.upperTitle}>Armor</Text>
+            </View>
+            <View style={styles.weaponContainer}>
+              <Armorset setArmorClass={setArmorClass} />
+            </View>
+          </View>
+        </View>
+        <View style={styles.spellslotContainer}>
+          <SpellSection />
+        </View>
       </View>
-      <View style={styles.spellslotContainer}>
-        <SpellSection />
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -107,6 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   spellslotContainer: {
-    height: 100,
+    //height: 1000,
   },
+  scrollContainer: {},
 });
