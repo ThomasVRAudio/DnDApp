@@ -17,8 +17,6 @@ interface Props {
 }
 
 const Skills: React.FC<Props> = (props: Props) => {
-  const [skillData, setSkillData] = useState<SkillData[] | null>(null);
-  const [modifierData, setModifierData] = useState<ModifierData[] | null>(null);
   const [linkedData, setLinkedData] = useState<LinkedData[] | null>(null);
   const [proficiencyBonus, setProficiencyBonus] = useState<number>(0);
 
@@ -40,8 +38,6 @@ const Skills: React.FC<Props> = (props: Props) => {
       let pBonus = await GetProficiencyBonusAsync();
       pBonus && setProficiencyBonus(pBonus);
 
-      setSkillData(skillData);
-      setModifierData(modData);
       linkData(modData, skillData);
     } catch (error) {
       console.error("Error fetching data:", error);

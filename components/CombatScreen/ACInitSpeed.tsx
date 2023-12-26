@@ -26,19 +26,6 @@ const ACInitSpeed = (props: Props) => {
   const [customAC, setCustomAC] = useState<number>(0);
 
   useEffect(() => {
-    //database.CreateTables();
-    //database.DropTable("ACInitSpeed");
-    // database.InsertIntoTable(
-    //   "ACInitSpeed",
-    //   ["name", "amount", "turnedOn"],
-    //   ["speed", 0, 1]
-    // );
-    // database.InsertIntoTable(
-    //   "ACInitSpeed",
-    //   ["name", "amount", "turnedOn"],
-    //   ["ac", 0, 0]
-    // );
-    console.log("currently in ACInit Speed");
     fetchData();
   }, [, props.AC, props.modifiersChanged]);
 
@@ -110,7 +97,11 @@ const ACInitSpeed = (props: Props) => {
           <View></View>
         )}
       </View>
-      <UpperStat name={"Initiative"} number={Initiative} isSharp={false} />
+      <UpperStat
+        name={"Initiative"}
+        number={Math.floor(Initiative)}
+        isSharp={false}
+      />
       <View style={styles.containerSpeed}>
         <TextInput
           style={styles.text}

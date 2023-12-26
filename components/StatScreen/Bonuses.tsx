@@ -26,6 +26,7 @@ interface BonusPropsModifier {
 
 interface Props {
   modifiersChanged: boolean;
+  levelChanged: boolean;
 }
 
 interface StatsData {
@@ -125,24 +126,6 @@ const BonusBoxWithModifier: React.FC<BonusPropsModifier> = ({
 const Bonuses: React.FC<Props> = (props: Props) => {
   const [data, setData] = useState<StatsData | null>(null);
 
-  useEffect(() => {
-    // if (modifier === "") setModifier("Charisma");
-    //database.RemoveAllRows("Stats");
-    //return;
-    //database.CreateTables();
-    // database.InsertIntoTable(
-    //   "Stats",
-    //   ["name", "modifier"],
-    //   ["Spell Attack", "Charisma"]
-    // );
-    // database.InsertIntoTable(
-    //   "Stats",
-    //   ["name", "modifier"],
-    //   ["Spell Save DC", "Charisma"]
-    // );
-    //fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const saveData = await database.GetData<SavingThrowData>("SavingThrows");
@@ -182,7 +165,8 @@ const Bonuses: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-  }, [, props.modifiersChanged]);
+    console.log("In bonuses !");
+  }, [, props.modifiersChanged, props.levelChanged]);
 
   return (
     <View style={styles.container}>

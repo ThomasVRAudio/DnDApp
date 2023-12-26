@@ -9,7 +9,12 @@ interface Info {
   info: string;
 }
 
-const CharacterDetails = () => {
+interface Props {
+  setLevelChanged: (bool: boolean) => void;
+  levelChanged: boolean;
+}
+
+const CharacterDetails = (props: Props) => {
   const [data, setData] = useState<CharData | null>(null);
 
   const fetchData = async () => {
@@ -52,6 +57,11 @@ const CharacterDetails = () => {
 
   const onConfirmChange = (name: string, info: string) => {
     database.UpdateTable("CharacterDetails", name, "info", info);
+
+    if (name === "Level") {
+      props.setLevelChanged(!props.levelChanged);
+      console.log("Name === Level: " + !props.levelChanged);
+    }
     fetchData();
   };
 

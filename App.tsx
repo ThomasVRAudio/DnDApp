@@ -3,8 +3,9 @@ import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { useFonts } from "expo-font";
 import Colors from "./styles/Colors";
 import CombatScreen from "./components/CombatScreen";
-import React, { StrictMode, useState } from "react";
+import React, { StrictMode, useEffect, useState } from "react";
 import StatScreen from "./components/StatScreen";
+import { database } from "./components/Database";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -16,6 +17,20 @@ export default function App() {
   });
 
   const [modifiersChanged, setModifiersChanged] = useState<boolean>(false);
+  const [initialized, setInitialized] = useState<boolean>(false);
+
+  useEffect(() => {
+    checkInit();
+  }, []);
+
+  const checkInit = async () => {
+    try {
+      let init = await database.InitializeDatabase();
+      setInitialized(init);
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
 
   const { width, height } = Dimensions.get("window");
   const totalPages = 3;
@@ -52,20 +67,24 @@ export default function App() {
 
   return (
     <StrictMode>
-      <View style={styles.container}>
-        <FlatList
-          data={[...Array(totalPages).keys()]}
-          horizontal
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.toString()}
-          initialNumToRender={totalPages}
-          renderItem={({ item }) => (
-            <View style={styles.container}>{ShowScreen(item)}</View>
-          )}
-        />
-        <StatusBar style="auto" />
-      </View>
+      {initialized ? (
+        <View style={styles.container}>
+          <FlatList
+            data={[...Array(totalPages).keys()]}
+            horizontal
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.toString()}
+            initialNumToRender={totalPages}
+            renderItem={({ item }) => (
+              <View style={styles.container}>{ShowScreen(item)}</View>
+            )}
+          />
+          <StatusBar style="auto" />
+        </View>
+      ) : (
+        <View></View>
+      )}
     </StrictMode>
   );
 }

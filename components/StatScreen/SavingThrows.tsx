@@ -15,6 +15,7 @@ interface LinkedData {
 
 interface Props {
   modifiersChanged: boolean;
+  levelChanged: boolean;
 }
 
 const SavingThrows = (props: Props) => {
@@ -48,7 +49,7 @@ const SavingThrows = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-  }, [, props.modifiersChanged]);
+  }, [, props.modifiersChanged, props.levelChanged]);
 
   const linkData = (
     modData: ModifierData[] | null,

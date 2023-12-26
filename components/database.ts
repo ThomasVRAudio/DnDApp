@@ -1,10 +1,15 @@
 import * as SQLite from "expo-sqlite";
+import { Initial } from "./DataInterfaces";
 export const db = SQLite.openDatabase("db.testDb");
 
 class Database {
   CreateTables(): void {
     db.transaction(
       (tx: SQLite.SQLTransaction) => {
+        tx.executeSql(
+          "create table if not exists Initial (id integer primary key not null, name text, status integer default 0);"
+        );
+
         tx.executeSql(
           "create table if not exists Modifiers (id integer primary key not null, name text, amount integer default 0);"
         );
@@ -256,6 +261,142 @@ class Database {
       () => console.log(`RemoveAllRows for ${tableName}: success!`)
     );
   }
+
+  InitializeDatabase = async (): Promise<boolean> => {
+    // this.DropTable("ACInitSpeed");
+    // this.DropTable("Health");
+    // this.DropTable("SpellSlots");
+    // this.DropTable("Modifiers");
+    // this.DropTable("Stats");
+    // this.DropTable("CharacterDetails");
+    // this.DropTable("SavingThrows");
+    // this.DropTable("Skills");
+    // this.DropTable("Initial");
+    // this.DropTable("Spells");
+    // this.DropTable("Armorset");
+    // this.DropTable("Weaponset");
+
+    // this.ShowAllTables();
+    // return false;
+
+    try {
+      this.CreateTables();
+      const data = await this.GetData<Initial | null>("Initial");
+
+      let alreadyExists = data?.find((d) => d?.name === "Initial")?.status;
+
+      if (alreadyExists !== undefined || alreadyExists === 1) return true;
+
+      this.InsertIntoTable(
+        "ACInitSpeed",
+        ["name", "amount", "turnedOn"],
+        ["speed", 25, 1]
+      );
+      this.InsertIntoTable(
+        "ACInitSpeed",
+        ["name", "amount", "turnedOn"],
+        ["ac", 0, 0]
+      );
+
+      let columns = ["name", "amount"];
+      let valueNames = ["maxHealth", "currentHealth", "tempHealth"];
+      valueNames.forEach((val) =>
+        this.InsertIntoTable("Health", columns, [val, 0])
+      );
+
+      for (let i = 0; i < 9; i++) {
+        database.InsertIntoTable(
+          "SpellSlots",
+          ["name", "amount", "max", "level"],
+          [`Level ${i + 1} `, 0, 0, i + 1]
+        );
+      }
+
+      valueNames = [
+        "Strength",
+        "Dexterity",
+        "Constitution",
+        "Intelligence",
+        "Wisdom",
+        "Charisma",
+      ];
+
+      columns = ["name", "amount"];
+      valueNames.forEach((val) =>
+        this.InsertIntoTable("Modifiers", columns, [val, 10])
+      );
+
+      this.InsertIntoTable(
+        "Stats",
+        ["name", "modifier"],
+        ["Spell Attack", "Charisma"]
+      );
+      this.InsertIntoTable(
+        "Stats",
+        ["name", "modifier"],
+        ["Spell Save DC", "Charisma"]
+      );
+
+      let characterValues = [
+        ["Name", "Unknown"],
+        ["Level", "1"],
+        ["Race", "Human"],
+        ["Background", "Adventurer"],
+        ["Alignment", "Neutral"],
+        ["Class", "Fighter"],
+        ["Experience", "0"],
+      ];
+
+      columns = ["name", "info"];
+      characterValues.forEach((val) =>
+        this.InsertIntoTable("CharacterDetails", columns, val)
+      );
+
+      valueNames = [
+        "Strength",
+        "Dexterity",
+        "Constitution",
+        "Intelligence",
+        "Wisdom",
+        "Charisma",
+      ];
+
+      columns = ["name", "status"];
+      valueNames.forEach((val) =>
+        this.InsertIntoTable("SavingThrows", columns, [val, 0])
+      );
+
+      let values = [
+        ["Acrobatics (DEX)", 0, "Dexterity"],
+        ["Animal Handling (WIS)", 0, "Wisdom"],
+        ["Arcana (INT)", 0, "Intelligence"],
+        ["Athletics (STR)", 0, "Strength"],
+        ["Deception (CHA)", 0, "Charisma"],
+        ["History (INT)", 0, "Intelligence"],
+        ["Insight (WIS)", 0, "Wisdom"],
+        ["Intimidation (CHA)", 0, "Charisma"],
+        ["Investigation (INT)", 0, "Intelligence"],
+        ["Medicine (WIS)", 0, "Wisdom"],
+        ["Nature (INT)", 0, "Intelligence"],
+        ["Perception (WIS)", 0, "Wisdom"],
+        ["Performance (CHA)", 0, "Charisma"],
+        ["Persuasion (CHA)", 0, "Charisma"],
+        ["Religion (INT)", 0, "Intelligence"],
+        ["Sleight of Hand (DEX)", 0, "Dexterity"],
+        ["Stealth (DEX)", 0, "Dexterity"],
+        ["Survival (WIS)", 0, "Wisdom"],
+      ];
+
+      columns = ["name", "status", "ability"];
+      values.forEach((val) => this.InsertIntoTable("Skills", columns, val));
+
+      this.InsertIntoTable("Initial", ["name", "status"], ["Initial", 1]);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    return true;
+  };
 }
 
 export const database: Database = new Database();

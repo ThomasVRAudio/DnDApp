@@ -116,3 +116,8 @@ export interface StatsModData {
   name: string;
   modifier: string;
 }
+
+export interface Initial {
+  name: string;
+  status: number;
+}

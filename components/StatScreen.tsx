@@ -4,6 +4,7 @@ import Bonuses from "./StatScreen/Bonuses";
 import AbilityModifiers from "./StatScreen/AbilityModifiers";
 import SavingThrows from "./StatScreen/SavingThrows";
 import Skills from "./StatScreen/Skills";
+import { useEffect, useState } from "react";
 
 let heightDimension: number = Dimensions.get("window").height;
 
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const StatScreen = (props: Props) => {
+  const [levelChanged, setLevelChanged] = useState<boolean>(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.d20ImageContainer}>
@@ -25,8 +28,14 @@ const StatScreen = (props: Props) => {
         <Text style={styles.headerText}>Character Info & Stats</Text>
       </View>
       <View style={styles.primarySection}>
-        <CharacterDetails />
-        <Bonuses modifiersChanged={props.modifiersChanged} />
+        <CharacterDetails
+          setLevelChanged={setLevelChanged}
+          levelChanged={levelChanged}
+        />
+        <Bonuses
+          modifiersChanged={props.modifiersChanged}
+          levelChanged={levelChanged}
+        />
       </View>
       <View style={styles.header}>
         <Text style={styles.subheaderText}>Ability Modifiers</Text>
@@ -36,7 +45,10 @@ const StatScreen = (props: Props) => {
           setModifiersChanged={props.setModifiersChanged}
           modifiersChanged={props.modifiersChanged}
         />
-        <SavingThrows modifiersChanged={props.modifiersChanged} />
+        <SavingThrows
+          modifiersChanged={props.modifiersChanged}
+          levelChanged={levelChanged}
+        />
       </View>
       <View style={styles.lastSection}>
         <Skills modifiersChanged={props.modifiersChanged} />
