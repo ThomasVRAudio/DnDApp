@@ -108,6 +108,16 @@ class Database {
 
         tx.executeSql(
           `
+          create table if not exists Coins
+          (id integer primary key not null,
+            name text,
+            amount integer
+            )
+          `
+        );
+
+        tx.executeSql(
+          `
           create table if not exists Stats
           (id integer primary key not null,
             name text,
@@ -429,6 +439,17 @@ class Database {
 
       columns = ["name", "status", "ability"];
       values.forEach((val) => this.InsertIntoTable("Skills", columns, val));
+
+      let coinValues = [
+        ["Copper (cp)", 0],
+        ["Silver (sp)", 0],
+        ["Electrum (ep)", 0],
+        ["Gold (gp)", 0],
+        ["Platinum (pp)", 0],
+      ];
+
+      columns = ["name", "amount"];
+      coinValues.forEach((val) => this.InsertIntoTable("Coins", columns, val));
 
       this.InsertIntoTable("Initial", ["name", "status"], ["Initial", 1]);
     } catch (error) {

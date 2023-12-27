@@ -127,3 +127,8 @@ export interface ItemData {
   desc: string;
   id: number;
 }
+
+export interface CoinData {
+  name: string;
+  amount: number;
+}

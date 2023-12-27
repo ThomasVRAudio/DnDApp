@@ -5,6 +5,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Colors from "../styles/Colors";
 import { Item } from "./ItemScreen/Item";
@@ -12,6 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { ItemData } from "./DataInterfaces";
 import { database } from "./Database";
+import CoinPouch from "./ItemScreen/CoinPouch";
 
 let heightDimension: number = Dimensions.get("window").height;
 
@@ -63,25 +65,29 @@ const ItemScreen = () => {
         <Text style={styles.title}>Items</Text>
       </View>
       <View style={styles.mainContainer}>
-        <View style={styles.itemContainer}>
-          {items?.map((val, index) => (
-            <Item
-              key={index}
-              id={val.id}
-              title={val.name}
-              description={val.desc}
-              updateItem={updateItem}
-              deleteItem={deleteItem}
-            />
-          ))}
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => addItem()}
-          >
-            <AntDesign name="plussquare" size={25}></AntDesign>
-          </TouchableOpacity>
+        <ScrollView>
+          <View style={styles.itemContainer}>
+            {items?.map((val, index) => (
+              <Item
+                key={index}
+                id={val.id}
+                title={val.name}
+                description={val.desc}
+                updateItem={updateItem}
+                deleteItem={deleteItem}
+              />
+            ))}
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => addItem()}
+            >
+              <AntDesign name="plussquare" size={25}></AntDesign>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <View style={styles.coinContainer}>
+          <CoinPouch />
         </View>
-        <View style={styles.coinContainer}></View>
       </View>
     </View>
   );
