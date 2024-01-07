@@ -45,6 +45,7 @@ export interface SpellSlotData {
   name: string;
   max: number;
   level: number;
+  id: number;
 }
 
 export interface SpellData {
@@ -131,4 +132,11 @@ export interface ItemData {
 export interface CoinData {
   name: string;
   amount: number;
+}
+
+export interface CounterData {
+  amount: number;
+  name: string;
+  max: number;
+  id: number;
 }

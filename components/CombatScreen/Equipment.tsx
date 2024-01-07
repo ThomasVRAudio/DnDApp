@@ -109,18 +109,13 @@ const Equipment = (props: Props) => {
     fetchData();
   }, [, props.modifiersChanged]);
 
-  useEffect(() => {
-    //database.TestDataBase();
-    //database.CreateTables();
-    //database.DropTable("Weaponset");
-    //database.DropTable("Armorset");
-    //database.RemoveAllRows("Armorset");
-    //database.RemoveAllRows("Weaponset");
-  }, []);
-
   return (
     <View>
-      <ScrollView style={styles.weaponsContainer}>
+      <ScrollView
+        style={styles.weaponsContainer}
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+      >
         {equipment?.map((equipmentItem, index) => (
           <Weapon
             removeWeapon={RemoveWeapon}
@@ -130,6 +125,7 @@ const Equipment = (props: Props) => {
             modifiersChanged={props.modifiersChanged}
           />
         ))}
+        <View style={styles.weaponPadding}></View>
       </ScrollView>
       <TouchableOpacity
         style={styles.buttonContainer}
@@ -162,5 +158,8 @@ const styles = StyleSheet.create({
   },
   weaponsContainer: {
     maxHeight: 220,
+  },
+  weaponPadding: {
+    marginBottom: 50,
   },
 });

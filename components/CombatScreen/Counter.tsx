@@ -7,19 +7,23 @@ import {
 } from "react-native";
 import Colors from "../../styles/Colors";
 import { useState } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
   amount: number;
-  level: number;
   max: number;
   name: string;
   id: number;
+  editMode: boolean;
   subtractSlot: (index: number) => void;
   setMaxAmount: (id: number, maxAmount: number) => void;
+  deleteItem: (id: number) => void;
+  setTitle: (id: number, name: string) => void;
 }
 
-const SpellSlot = (props: Props) => {
+const Counter = (props: Props) => {
   const [maxValue, setMaxValue] = useState<number>(0);
+  const [title, setTitle] = useState<string>("");
 
   return (
     <View style={styles.container}>
@@ -30,7 +34,21 @@ const SpellSlot = (props: Props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.levelTitleContainer}>
-          <Text style={styles.levelTitle}>{props.name}</Text>
+          <TextInput
+            style={styles.levelTitle}
+            multiline={true}
+            onChangeText={(newText) => {
+              setTitle(newText);
+            }}
+            onSubmitEditing={() => {
+              props.setTitle(props.id, title);
+            }}
+            onBlur={() => {
+              props.setTitle(props.id, title);
+            }}
+          >
+            {props.name}
+          </TextInput>
         </View>
       </View>
       <View style={styles.maxContainer}>
@@ -43,21 +61,34 @@ const SpellSlot = (props: Props) => {
           keyboardType="numeric"
         ></TextInput>
       </View>
+      {props.editMode ? (
+        <TouchableOpacity onPress={() => props.deleteItem(props.id)}>
+          <Ionicons
+            style={styles.removeButton}
+            name="trash"
+            size={20}
+            color={Colors.Darkest}
+          />
+        </TouchableOpacity>
+      ) : (
+        <View></View>
+      )}
     </View>
   );
 };
 
-export default SpellSlot;
+export default Counter;
 
 const styles = StyleSheet.create({
   container: {
-    width: 60,
+    width: 100,
     justifyContent: "space-between",
-    height: 110,
+    height: "auto",
+    marginHorizontal: 5,
   },
   levelBlock: {
     backgroundColor: Colors.secundary,
-    height: 80,
+    height: 100,
     elevation: 5,
     borderRadius: 10,
   },
@@ -90,7 +121,11 @@ const styles = StyleSheet.create({
   },
   levelNumberContainer: {
     alignContent: "center",
-    flex: 2,
+    flex: 1.5,
     justifyContent: "center",
+  },
+  removeButton: {
+    padding: 4,
+    alignSelf: "center",
   },
 });

@@ -7,7 +7,7 @@ import { HealthData } from "../DataInterfaces";
 import { database } from "../Database";
 
 const HitPoints = () => {
-  const [maxHealth, setMaxHealth] = useState<number>(23);
+  const [maxHealth, setMaxHealth] = useState<number>(10);
   const [health, setHealth] = useState<number>(0);
   const [tempHealth, setTempHealth] = useState<number>(0);
   const [editMaxAmount, setEditMaxAmount] = useState<number>(0);
@@ -18,7 +18,6 @@ const HitPoints = () => {
     switch (operation) {
       case "add":
         database.UpdateTable("Health", "currentHealth", "amount", health + 1);
-        console.log("hi");
         break;
       case "subtract":
         database.UpdateTable("Health", "currentHealth", "amount", health - 1);
@@ -53,23 +52,6 @@ const HitPoints = () => {
     fetchData();
   };
 
-  useEffect(() => {
-    //console.log(health);
-  }, [health]);
-
-  useEffect(() => {
-    //database.RemoveAllRows("Health");
-    //database.CreateTables();
-    //database.ShowAllTables();
-    //const columns = ["name", "amount"];
-    // const valueNames = ["maxHealth", "currentHealth", "tempHealth"];
-    // valueNames.forEach((val) =>
-    //   database.InsertIntoTable("Health", columns, [val, 0])
-    // );
-
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const fetchedData = await database.GetData<HealthData>("Health");
@@ -80,7 +62,6 @@ const HitPoints = () => {
       );
       const tempHealth = fetchedData?.find((e) => e.name === "tempHealth");
 
-      console.log(fetchedData);
       setMaxHealth(maxHealth?.amount ?? 0);
       setTempHealth(tempHealth?.amount ?? 0);
       setHealth(currentHealth?.amount ?? 0);

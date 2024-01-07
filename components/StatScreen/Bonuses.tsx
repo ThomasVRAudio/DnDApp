@@ -165,7 +165,6 @@ const Bonuses: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-    console.log("In bonuses !");
   }, [, props.modifiersChanged, props.levelChanged]);
 
   return (

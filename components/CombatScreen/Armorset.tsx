@@ -117,8 +117,6 @@ const Armorset = (props: Props) => {
     if (wearsArmor === false && equipment?.length !== 0) {
       AC += 10;
     }
-    console.log("dex: " + dex);
-    console.log("from Armorset AC: " + AC);
     props.setArmorClass(AC);
   };
 

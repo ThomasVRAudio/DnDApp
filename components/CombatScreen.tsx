@@ -5,6 +5,8 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import UpperStat from "./CombatScreen/UpperStat";
 import Colors from "../styles/Colors";
@@ -14,8 +16,9 @@ import Weapon from "./CombatScreen/Weapon";
 import Armor from "./CombatScreen/Armor";
 import SpellSection from "./CombatScreen/SpellSection";
 import ACInitSpeed from "./CombatScreen/ACInitSpeed";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Armorset from "./CombatScreen/Armorset";
+import Counters from "./CombatScreen/Counters";
 
 let heightDimension: number = Dimensions.get("window").height;
 
@@ -27,50 +30,59 @@ export default function CombatScreen(props: Props) {
   const [armorClass, setArmorClass] = useState<number>(0);
 
   return (
-    <ScrollView style={styles.scrollContainer}>
-      <View style={styles.container}>
-        <View style={styles.d20ImageContainer}>
-          <Image
-            style={styles.d20Image}
-            source={require("../assets/Image_D20.png")}
-          />
-        </View>
-        <View style={styles.headerContainer}>
-          <ACInitSpeed
-            AC={armorClass}
-            modifiersChanged={props.modifiersChanged}
-          />
-          <View style={styles.headerContainerRight}>
-            <Text style={styles.upperTitle}>Weapons</Text>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+      <ScrollView
+        style={styles.scrollContainer}
+        automaticallyAdjustKeyboardInsets={true}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          <View style={styles.d20ImageContainer}>
+            <Image
+              style={styles.d20Image}
+              source={require("../assets/Image_D20.png")}
+            />
           </View>
-        </View>
-        <View style={styles.upperContainer}>
-          <View style={styles.hitPointsContainer}>
-            <HitPoints />
-          </View>
-          <View style={styles.gearContainer}>
-            <View style={styles.weaponContainer}>
-              <Equipment
-                equipment_type={"Weapon"}
-                modifiersChanged={props.modifiersChanged}
-              />
-            </View>
-            <View style={styles.headerContainerArmor}>
-              <Text style={styles.upperTitle}>Armor</Text>
-            </View>
-            <View style={styles.weaponContainer}>
-              <Armorset
-                setArmorClass={setArmorClass}
-                modifiersChanged={props.modifiersChanged}
-              />
+          <View style={styles.headerContainer}>
+            <ACInitSpeed
+              AC={armorClass}
+              modifiersChanged={props.modifiersChanged}
+            />
+            <View style={styles.headerContainerRight}>
+              <Text style={styles.upperTitle}>Weapons</Text>
             </View>
           </View>
+          <View style={styles.upperContainer}>
+            <View style={styles.hitPointsContainer}>
+              <HitPoints />
+            </View>
+            <View style={styles.gearContainer}>
+              <View style={styles.weaponContainer}>
+                <Equipment
+                  equipment_type={"Weapon"}
+                  modifiersChanged={props.modifiersChanged}
+                />
+              </View>
+              <View style={styles.headerContainerArmor}>
+                <Text style={styles.upperTitle}>Armor</Text>
+              </View>
+              <View style={styles.weaponContainer}>
+                <Armorset
+                  setArmorClass={setArmorClass}
+                  modifiersChanged={props.modifiersChanged}
+                />
+              </View>
+            </View>
+          </View>
+          <View style={styles.spellslotContainer}>
+            <SpellSection />
+          </View>
+          <View>
+            <Counters />
+          </View>
         </View>
-        <View style={styles.spellslotContainer}>
-          <SpellSection />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -131,5 +143,7 @@ const styles = StyleSheet.create({
   spellslotContainer: {
     //height: 1000,
   },
-  scrollContainer: {},
+  scrollContainer: {
+    flex: 1,
+  },
 });

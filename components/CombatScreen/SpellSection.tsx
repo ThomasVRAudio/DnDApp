@@ -28,26 +28,26 @@ const SpellSection = () => {
     null
   );
 
-  function SubtractSlotAmount(name: string) {
-    database.UpdateTable(
+  function SubtractSlotAmount(id: number) {
+    database.UpdateTableByID(
       "SpellSlots",
-      name,
+      id,
       "amount",
-      (spellSlotData?.find((d) => d.name === name)?.amount ?? 0) - 1
+      (spellSlotData?.find((d) => d.id === id)?.amount ?? 0) - 1
     );
-    fetchData();
+    fetchSpellSlotData();
   }
 
   const ResetSlotsToMax = () => {
     spellSlotData?.forEach((s) => {
-      database.UpdateTable("SpellSlots", s.name, "amount", s.max);
-      fetchData();
+      database.UpdateTableByID("SpellSlots", s.id, "amount", s.max);
     });
+    fetchSpellSlotData();
   };
 
-  const SetMaxAmount = (name: string, maxValue: number) => {
-    database.UpdateTable("SpellSlots", name, "max", maxValue);
-    fetchData();
+  const SetMaxAmount = (id: number, maxValue: number) => {
+    database.UpdateTableByID("SpellSlots", id, "max", maxValue);
+    fetchSpellSlotData();
   };
 
   const ShowSpellDescription = (data: SpellDataToMap) => {
@@ -79,55 +79,38 @@ const SpellSection = () => {
       data.school.name,
     ];
     database.InsertIntoTable("Spells", columns, values);
-    fetchData();
+    fetchSpellData();
   };
 
-  const fetchData = async () => {
+  const fetchSpellData = async () => {
     try {
-      const fetchedSpellSlotData = await database.GetData<SpellSlotData>(
-        "SpellSlots"
-      );
-
       const fetchedSpellData = await database.GetData<SpellDataToMap>("Spells");
-
-      setSpellSlotData(fetchedSpellSlotData);
       setSpells(fetchedSpellData);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    //database.ShowAllTables();
-    //database.DropTable("SpellSlots");
-    //database.CreateTables();
-    // slots.forEach((s, index) => {
-    //   database.InsertIntoTable(
-    //     "SpellSlots",
-    //     ["name", "amount", "max", "level"],
-    //     [`Level ${index + 1} `, 0, 0, index + 1]
-    //   );
-    // });
+  const fetchSpellSlotData = async () => {
+    try {
+      const fetchedSpellSlotData = await database.GetData<SpellSlotData>(
+        "SpellSlots"
+      );
+      setSpellSlotData(fetchedSpellSlotData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    // for (let i = 0; i < 9; i++) {
-    //   database.InsertIntoTable(
-    //     "SpellSlots",
-    //     ["name", "amount", "max", "level"],
-    //     [`Level ${i + 1} `, 0, 0, i + 1]
-    //   );
-    // }
-    //database.DropTable("Spells");
-    //database.ShowTableContent("Spells");
-    fetchData();
-    console.log(
-      "length: " + spells?.filter((spell) => parseInt(spell.level) === 0).length
-    );
+  useEffect(() => {
+    fetchSpellSlotData();
+    fetchSpellData();
   }, []);
 
   const removeSpell = async (name: string) => {
     try {
       await database.RemoveRow("Spells", name);
-      fetchData();
+      fetchSpellData();
     } catch (error) {
       console.error("Error:", error);
     }
@@ -146,6 +129,7 @@ const SpellSection = () => {
             level={item.level}
             max={item.max}
             name={item.name}
+            id={item.id}
             subtractSlot={SubtractSlotAmount}
             setMaxAmount={SetMaxAmount}
           />

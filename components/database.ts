@@ -60,6 +60,16 @@ class Database {
 
         tx.executeSql(
           `
+          create table if not exists Counters 
+          (id integer primary key not null, 
+            name text, 
+            amount integer, 
+            max integer);
+          `
+        );
+
+        tx.executeSql(
+          `
           create table if not exists Weaponset
           (id integer primary key not null,
             name text,
@@ -325,7 +335,9 @@ class Database {
     // this.DropTable("Spells");
     // this.DropTable("Armorset");
     // this.DropTable("Weaponset");
-
+    // this.DropTable("Counters");
+    // this.DropTable("Items");
+    // this.DropTable("Coins");
     // this.ShowAllTables();
     // return false;
 

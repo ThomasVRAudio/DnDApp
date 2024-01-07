@@ -60,7 +60,6 @@ const CharacterDetails = (props: Props) => {
 
     if (name === "Level") {
       props.setLevelChanged(!props.levelChanged);
-      console.log("Name === Level: " + !props.levelChanged);
     }
     fetchData();
   };
