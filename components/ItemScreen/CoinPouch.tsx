@@ -20,6 +20,7 @@ export const CoinRow = ({ title, amount, updateCoins }: Props) => {
         style={styles.input}
         onChangeText={(val) => setQuantity(parseInt(val))}
         onSubmitEditing={() => updateCoins(title, quantity)}
+        onBlur={() => updateCoins(title, quantity)}
       >
         {amount}
       </TextInput>

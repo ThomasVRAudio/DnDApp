@@ -55,7 +55,7 @@ const SpellDescriptionModal = (props: Props) => {
               <Text style={styles.description}>
                 {props.data?.desc.length !== undefined ||
                 props.data?.desc.length !== 0
-                  ? props.data?.desc.replace(/\./g, ".\n\n")
+                  ? props.data?.desc.replace(/\. /g, ".\n\n")
                   : null}
               </Text>
             </View>
