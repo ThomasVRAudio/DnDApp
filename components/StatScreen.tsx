@@ -15,6 +15,7 @@ interface Props {
 
 const StatScreen = (props: Props) => {
   const [levelChanged, setLevelChanged] = useState<boolean>(false);
+  const [skillChanged, setSkillChanged] = useState<boolean>(false);
 
   return (
     <View style={styles.container}>
@@ -35,6 +36,7 @@ const StatScreen = (props: Props) => {
         <Bonuses
           modifiersChanged={props.modifiersChanged}
           levelChanged={levelChanged}
+          skillChanged={skillChanged}
         />
       </View>
       <View style={styles.header}>
@@ -51,7 +53,11 @@ const StatScreen = (props: Props) => {
         />
       </View>
       <View style={styles.lastSection}>
-        <Skills modifiersChanged={props.modifiersChanged} />
+        <Skills
+          modifiersChanged={props.modifiersChanged}
+          setSkillChanged={setSkillChanged}
+          skillChanged={skillChanged}
+        />
       </View>
     </View>
   );

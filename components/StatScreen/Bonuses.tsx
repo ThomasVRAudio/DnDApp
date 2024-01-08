@@ -27,6 +27,7 @@ interface BonusPropsModifier {
 interface Props {
   modifiersChanged: boolean;
   levelChanged: boolean;
+  skillChanged: boolean;
 }
 
 interface StatsData {
@@ -165,7 +166,7 @@ const Bonuses: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-  }, [, props.modifiersChanged, props.levelChanged]);
+  }, [, props.modifiersChanged, props.levelChanged, props.skillChanged]);
 
   return (
     <View style={styles.container}>

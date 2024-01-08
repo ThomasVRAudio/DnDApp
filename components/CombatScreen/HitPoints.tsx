@@ -56,19 +56,23 @@ const HitPoints = () => {
     try {
       const fetchedData = await database.GetData<HealthData>("Health");
 
-      const maxHealth = fetchedData?.find((e) => e.name === "maxHealth");
-      const currentHealth = fetchedData?.find(
+      const maxHealthData = fetchedData?.find((e) => e.name === "maxHealth");
+      const currentHealthData = fetchedData?.find(
         (e) => e.name === "currentHealth"
       );
       const tempHealth = fetchedData?.find((e) => e.name === "tempHealth");
 
-      setMaxHealth(maxHealth?.amount ?? 0);
+      setMaxHealth(maxHealthData?.amount ?? 0);
       setTempHealth(tempHealth?.amount ?? 0);
-      setHealth(currentHealth?.amount ?? 0);
+      setHealth(currentHealthData?.amount ?? 0);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View>

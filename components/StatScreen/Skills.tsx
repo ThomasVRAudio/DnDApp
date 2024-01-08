@@ -14,6 +14,8 @@ interface LinkedData {
 
 interface Props {
   modifiersChanged: boolean;
+  setSkillChanged: (b: boolean) => void;
+  skillChanged: boolean;
 }
 
 const Skills: React.FC<Props> = (props: Props) => {
@@ -27,6 +29,11 @@ const Skills: React.FC<Props> = (props: Props) => {
       "status",
       skill.status === 1 ? 0 : 1
     );
+
+    if (skill.name === "Perception (WIS)") {
+      props.setSkillChanged(!props.skillChanged);
+    }
+
     fetchData();
   };
 
