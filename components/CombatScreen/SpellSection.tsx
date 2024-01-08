@@ -153,8 +153,8 @@ const SpellSection = () => {
       <View style={styles.spellContainer}></View>
       <View style={styles.spellHeader}>
         <Text style={styles.spellHeaderTitle}>
-          {spells?.filter((spell) => parseInt(spell.level) === 0).length ===
-            0 || undefined
+          {spells?.filter((spell) => spell.level === "Trait").length === 0 ||
+          undefined
             ? ""
             : "Traits"}
         </Text>
