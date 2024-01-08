@@ -39,14 +39,16 @@ const AddEquipmentModal = (props: Props) => {
 
   function ConfirmSearch() {
     props.setModal(false);
-
     if (!chosenSearch) return;
 
     let searchTerm: string = chosenSearch
       .toLowerCase()
       .trim()
       .replace(/ /g, "-")
-      .replace(/'/g, "-");
+      .replace(/'/g, "-")
+      .replace(/,/g, "");
+
+    console.log("term: " + searchTerm);
 
     fetch(`${URL}${searchTerm}`)
       .then((resp) => resp.json())
@@ -78,11 +80,7 @@ const AddEquipmentModal = (props: Props) => {
       return;
     }
 
-    let term: string = search
-      .toLowerCase()
-      .trimEnd()
-      .replace(/ /g, "-")
-      .replace(/'/g, "-");
+    let term: string = search.toLowerCase().trimEnd();
 
     let itemList: string[] = [];
 

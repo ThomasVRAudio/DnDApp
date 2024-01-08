@@ -44,7 +44,8 @@ const AddSpellModal = (props: Props) => {
       .toLowerCase()
       .trim()
       .replace(/ /g, "-")
-      .replace(/'/g, "-");
+      .replace(/'/g, "-")
+      .replace(/,/g, "");
 
     fetch(`${URL}${searchTerm}`)
       .then((resp) => resp.json())
@@ -69,11 +70,7 @@ const AddSpellModal = (props: Props) => {
       return;
     }
 
-    let term: string = search
-      .toLowerCase()
-      .trimEnd()
-      .replace(/ /g, "-")
-      .replace(/'/g, "-");
+    let term: string = search.toLowerCase().trimEnd();
 
     let itemList: string[] = [];
 
