@@ -1,4 +1,12 @@
-import { View, Modal, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Modal,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Touchable,
+} from "react-native";
 import { SpellData, SpellDataToMap } from "../DataInterfaces";
 import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -14,51 +22,56 @@ const SpellDescriptionModal = (props: Props) => {
     <View>
       <Modal transparent={true}>
         <View style={styles.modalContainer}>
-          <TouchableOpacity
-            onPress={() => props.setModal(false)}
+          <View
+            onTouchEnd={() => props.setModal(false)}
             style={styles.modalContent}
           >
-            <View style={styles.header}>
-              <Text style={styles.title}>{props.data?.name}</Text>
-              {props.data?.level !== null && props.data?.level !== undefined ? (
-                parseInt(props.data?.level) === 0 ? (
-                  <Text style={styles.level}>Cantrip</Text>
-                ) : props.data?.level === "Trait" ? (
-                  <Text style={styles.level}>{props.data?.level}</Text>
-                ) : (
-                  <Text style={styles.level}>
-                    Level {parseFloat(props.data?.level)}
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.header}>
+                <Text style={styles.title}>{props.data?.name}</Text>
+                {props.data?.level !== null &&
+                props.data?.level !== undefined ? (
+                  parseInt(props.data?.level) === 0 ? (
+                    <Text style={styles.level}>Cantrip</Text>
+                  ) : props.data?.level === "Trait" ? (
+                    <Text style={styles.level}>{props.data?.level}</Text>
+                  ) : (
+                    <Text style={styles.level}>
+                      Level {parseFloat(props.data?.level)}
+                    </Text>
+                  )
+                ) : null}
+              </View>
+              <View style={styles.line}></View>
+              <View style={styles.infoContainer}>
+                <View style={styles.infoLine}>
+                  <Text style={styles.infoTitle}>Casting Time: </Text>
+                  <Text style={styles.infoData}>
+                    {props.data?.casting_time}
                   </Text>
-                )
-              ) : null}
-            </View>
-            <View style={styles.line}></View>
-            <View style={styles.infoContainer}>
-              <View style={styles.infoLine}>
-                <Text style={styles.infoTitle}>Casting Time: </Text>
-                <Text style={styles.infoData}>{props.data?.casting_time}</Text>
+                </View>
+                <View style={styles.infoLine}>
+                  <Text style={styles.infoTitle}>Range: </Text>
+                  <Text style={styles.infoData}>{props.data?.range}</Text>
+                </View>
+                <View style={styles.infoLine}>
+                  <Text style={styles.infoTitle}>Components: </Text>
+                  <Text style={styles.infoData}>{props.data?.components}</Text>
+                </View>
+                <View style={styles.infoLine}>
+                  <Text style={styles.infoTitle}>Duration: </Text>
+                  <Text style={styles.infoData}>{props.data?.duration}</Text>
+                </View>
               </View>
-              <View style={styles.infoLine}>
-                <Text style={styles.infoTitle}>Range: </Text>
-                <Text style={styles.infoData}>{props.data?.range}</Text>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.description}>
+                  {props.data?.desc.length !== undefined ||
+                  props.data?.desc.length !== 0
+                    ? props.data?.desc.replace(/\. /g, ".\n\n")
+                    : null}
+                </Text>
               </View>
-              <View style={styles.infoLine}>
-                <Text style={styles.infoTitle}>Components: </Text>
-                <Text style={styles.infoData}>{props.data?.components}</Text>
-              </View>
-              <View style={styles.infoLine}>
-                <Text style={styles.infoTitle}>Duration: </Text>
-                <Text style={styles.infoData}>{props.data?.duration}</Text>
-              </View>
-            </View>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>
-                {props.data?.desc.length !== undefined ||
-                props.data?.desc.length !== 0
-                  ? props.data?.desc.replace(/\. /g, ".\n\n")
-                  : null}
-              </Text>
-            </View>
+            </ScrollView>
             <View style={styles.removeContainer}>
               <TouchableOpacity
                 onPress={() => {
@@ -69,7 +82,7 @@ const SpellDescriptionModal = (props: Props) => {
                 <Ionicons style={styles.removeButton} name="trash" size={25} />
               </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
@@ -155,7 +168,7 @@ const styles = StyleSheet.create({
   },
   removeContainer: {
     position: "absolute",
-    bottom: 20,
-    right: 20,
+    bottom: 10,
+    right: 10,
   },
 });
