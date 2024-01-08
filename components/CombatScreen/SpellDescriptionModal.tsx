@@ -23,6 +23,8 @@ const SpellDescriptionModal = (props: Props) => {
               {props.data?.level !== null && props.data?.level !== undefined ? (
                 parseInt(props.data?.level) === 0 ? (
                   <Text style={styles.level}>Cantrip</Text>
+                ) : props.data?.level === "Trait" ? (
+                  <Text style={styles.level}>{props.data?.level}</Text>
                 ) : (
                   <Text style={styles.level}>
                     Level {parseFloat(props.data?.level)}

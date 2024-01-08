@@ -156,6 +156,25 @@ const SpellSection = () => {
           {spells?.filter((spell) => parseInt(spell.level) === 0).length ===
             0 || undefined
             ? ""
+            : "Traits"}
+        </Text>
+      </View>
+      <View style={styles.spellContainer}>
+        {spells
+          ?.filter((spell) => spell.level === "Trait")
+          .map((spell, index) => (
+            <Spell
+              data={spell}
+              key={index}
+              showSpellDescription={ShowSpellDescription}
+            />
+          ))}
+      </View>
+      <View style={styles.spellHeader}>
+        <Text style={styles.spellHeaderTitle}>
+          {spells?.filter((spell) => parseInt(spell.level) === 0).length ===
+            0 || undefined
+            ? ""
             : "Cantrips"}
         </Text>
       </View>
@@ -180,7 +199,9 @@ const SpellSection = () => {
       </View>
       <View style={styles.spellContainer}>
         {spells
-          ?.filter((spell) => parseInt(spell.level) !== 0)
+          ?.filter(
+            (spell) => parseInt(spell.level) !== 0 && spell.level !== "Trait"
+          )
           .map((spell, index) => (
             <Spell
               data={spell}

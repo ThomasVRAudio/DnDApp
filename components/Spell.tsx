@@ -17,6 +17,8 @@ const Spell = (props: Props) => {
       <Text style={styles.title}>{props.data?.name}</Text>
       {parseInt(props.data.level) === 0 ? (
         <Text style={styles.level}>Cantrip</Text>
+      ) : props.data.level === "Trait" ? (
+        <Text style={styles.level}>{props.data.level}</Text>
       ) : (
         <Text style={styles.level}>Level {parseFloat(props.data.level)}</Text>
       )}
@@ -25,7 +27,7 @@ const Spell = (props: Props) => {
         {parseInt(props.data.level) === 0 ? (
           <Ionicons name="flash" size={15} />
         ) : (
-          <Text style={styles.amount}>x2</Text>
+          <View></View>
         )}
       </Text>
     </TouchableOpacity>

@@ -2,6 +2,7 @@ import { View, TextInput, StyleSheet, Modal, Text } from "react-native";
 import Colors from "../../styles/Colors";
 import { useEffect, useState } from "react";
 import { SpellData } from "../DataInterfaces";
+import LocalSpells from "../LocalSpells";
 
 interface Props {
   setModal: (updateModel: boolean) => void;
@@ -40,6 +41,15 @@ const AddSpellModal = (props: Props) => {
 
     if (!chosenSearch) return;
 
+    let localSearch: SpellData | undefined = LocalSpells.find(
+      (data) => data.name === chosenSearch
+    );
+
+    if (localSearch) {
+      props.saveSpell(localSearch);
+      return;
+    }
+
     let searchTerm: string = chosenSearch
       .toLowerCase()
       .trim()
@@ -74,18 +84,30 @@ const AddSpellModal = (props: Props) => {
 
     let itemList: string[] = [];
 
+    let localFilteredItems: SpellData[] = LocalSpells.filter((item) => {
+      return item.name.toLocaleLowerCase().startsWith(`${term}`);
+    });
+
     let filteredItems: SpellData[] = apiData.results.filter((item) => {
       return item.name.toLocaleLowerCase().startsWith(`${term}`);
     });
 
-    if (!filteredItems) {
+    if (!filteredItems && !localFilteredItems) {
       setSearchList([]);
       return;
     }
 
-    for (let index = 0; index < filteredItems.length; index++) {
-      if (index >= 3) break;
+    let maxItems = 3;
 
+    for (let index = 0; index < localFilteredItems.length; index++) {
+      if (index >= 3) break;
+      maxItems -= 1;
+      itemList.push(localFilteredItems[index].name);
+    }
+
+    for (let index = 0; index < filteredItems.length; index++) {
+      if (index >= 3 || maxItems === 0) break;
+      maxItems -= 1;
       itemList.push(filteredItems[index].name);
     }
     setSearchList(itemList);
