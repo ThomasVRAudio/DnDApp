@@ -4,7 +4,7 @@ import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { ModifierData, SavingThrowData } from "../DataInterfaces";
-import { database } from "../Database";
+import { database } from "../database";
 import { GetProficiencyBonusAsync } from "../../helper";
 
 interface LinkedData {

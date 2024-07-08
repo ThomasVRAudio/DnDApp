@@ -13,7 +13,7 @@ import { Item } from "./ItemScreen/Item";
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { ItemData } from "./DataInterfaces";
-import { database } from "./Database";
+import { database } from "./database";
 import CoinPouch from "./ItemScreen/CoinPouch";
 
 let heightDimension: number = Dimensions.get("window").height;

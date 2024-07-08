@@ -1,5 +1,5 @@
 import { CharData } from "./components/DataInterfaces";
-import { database } from "./components/Database";
+import { database } from "./components/database";
 
 interface Info {
   name: string;

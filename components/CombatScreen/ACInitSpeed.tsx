@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import UpperStat from "./UpperStat";
 import { useEffect, useState } from "react";
-import { database } from "../Database";
+import { database } from "../database";
 import { ModifierData, ACInitSpeedData } from "../DataInterfaces";
 import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";

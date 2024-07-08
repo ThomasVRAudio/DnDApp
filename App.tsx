@@ -5,7 +5,7 @@ import Colors from "./styles/Colors";
 import CombatScreen from "./components/CombatScreen";
 import React, { StrictMode, useEffect, useState } from "react";
 import StatScreen from "./components/StatScreen";
-import { database } from "./components/Database";
+import { database } from "./components/database";
 import ItemScreen from "./components/ItemScreen";
 
 export default function App() {

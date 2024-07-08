@@ -10,7 +10,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import AddEquipmentModal from "./AddEquipmentModal";
 import React from "react";
-import { database } from "../Database";
+import { database } from "../database";
 import Armor from "./Armor";
 
 interface Props {

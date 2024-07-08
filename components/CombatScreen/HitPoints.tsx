@@ -4,7 +4,7 @@ import AddButton from "./AddButton";
 import { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { HealthData } from "../DataInterfaces";
-import { database } from "../Database";
+import { database } from "../database";
 
 const HitPoints = () => {
   const [maxHealth, setMaxHealth] = useState<number>(10);

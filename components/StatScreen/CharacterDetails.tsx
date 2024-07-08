@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import Colors from "../../styles/Colors";
-import { database } from "../Database";
+import { database } from "../database";
 import { CharData } from "../DataInterfaces";
 
 interface Info {

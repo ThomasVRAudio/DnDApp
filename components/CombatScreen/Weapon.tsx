@@ -6,7 +6,7 @@ import { GetProficiencyBonusAsync } from "../../helper";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { TouchableOpacity } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
-import { database } from "../Database";
+import { database } from "../database";
 
 interface Props {
   equipment: EquipmentData | null;

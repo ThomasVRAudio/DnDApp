@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Colors from "../../styles/Colors";
-import { database } from "../Database";
+import { database } from "../database";
 import {
   ModifierData,
   SavingThrowData,

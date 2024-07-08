@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Colors from "../../styles/Colors";
 import Counter from "./Counter";
-import { database } from "../Database";
+import { database } from "../database";
 import { useEffect, useState } from "react";
 import { CounterData } from "../DataInterfaces";
 import Ionicons from "@expo/vector-icons/Ionicons";

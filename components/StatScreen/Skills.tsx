@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../styles/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { database } from "../Database";
+import { database } from "../database";
 import { ModifierData, SkillData } from "../DataInterfaces";
 import { GetProficiencyBonusAsync } from "../../helper";
 

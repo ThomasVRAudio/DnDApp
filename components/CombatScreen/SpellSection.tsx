@@ -15,7 +15,7 @@ import { AntDesign } from "@expo/vector-icons";
 import AddSpellModal from "./AddSpellModal";
 import Spell from "../Spell";
 import SpellDescriptionModal from "./SpellDescriptionModal";
-import { database } from "../Database";
+import { database } from "../database";
 
 const SpellSection = () => {
   const [modal, setModal] = useState<boolean>(false);
@@ -202,6 +202,7 @@ const SpellSection = () => {
           ?.filter(
             (spell) => parseInt(spell.level) !== 0 && spell.level !== "Trait"
           )
+          .sort((a, b) => parseInt(a.level) - parseInt(b.level))
           .map((spell, index) => (
             <Spell
               data={spell}
