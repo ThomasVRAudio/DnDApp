@@ -171,8 +171,7 @@ class Database {
         (error: SQLite.SQLError) => {
           console.log(error);
           reject(error);
-        },
-        () => console.log("Get Data: success!")
+        }
       );
     });
   }

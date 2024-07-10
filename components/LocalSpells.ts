@@ -26,6 +26,24 @@ const LocalSpells: SpellData[] = [
   },
   {
     error: "",
+    name: "Countercharm",
+    desc: [
+      `At 6th level, you gain the ability to use musical notes or words of power to disrupt mind-influencing effects. 
+      As an action, you can start a performance that lasts until the end of your next turn. 
+      During that time, you and any friendly creatures within 30 feet of you have advantage on saving throws against being frightened or charmed. 
+      A creature must be able to hear you to gain this benefit. 
+      The performance ends early if you are incapacitated or silenced or if you voluntarily end it (no action required).`,
+    ],
+    level: "Trait",
+    components: ["None"],
+    range: "30 feet",
+    higher_level: [],
+    duration: "until end of next turn",
+    casting_time: "action",
+    school: { name: "" },
+  },
+  {
+    error: "",
     name: "Tasha's Hideous Laughter",
     desc: [
       `A creature of your choice that you can see within range perceives everything as hilariously funny and falls into fits of laughter if this spell affects it. 

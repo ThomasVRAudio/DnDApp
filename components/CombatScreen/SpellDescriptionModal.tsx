@@ -72,6 +72,16 @@ const SpellDescriptionModal = (props: Props) => {
                         .replace(/\. /g, ".\n\n")
                     : null}
                 </Text>
+                {props.data?.higher_level ? (
+                  <>
+                    <Text style={styles.higherLevelTitle}>Higher Level: </Text>
+                    <Text style={styles.description}>
+                      {props.data?.higher_level}
+                    </Text>
+                  </>
+                ) : (
+                  <Text></Text>
+                )}
               </View>
             </ScrollView>
             <View style={styles.removeContainer}>
@@ -141,6 +151,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   infoTitle: {
+    fontFamily: "Bold",
+    fontSize: 15,
+  },
+  higherLevelTitle: {
+    marginTop: 20,
     fontFamily: "Bold",
     fontSize: 15,
   },
